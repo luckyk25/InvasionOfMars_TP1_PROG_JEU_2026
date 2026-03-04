@@ -37,6 +37,7 @@ private:
 	void calculateDeltaTime();
 
 	void ajustCrossingWorldLimits();
+	void managePlayerMovment();
 
 	RenderWindow renderWindow;
 	View mainView;

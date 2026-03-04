@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 #include "Constants.h"
 
 struct Inputs
@@ -14,6 +15,8 @@ struct Inputs
 	{
 		moveVertical = 0.0f;
 		moveHorizontal = 0.0f;
+		rotation = 0.0f;
+		mousePosition = sf::Vector2f(0.0f, 0.0f);
 		//Peut-être pratique de sauvegarder le fait
 		//que le gamepad soit actif ou non (voir game.getInputs)
 		bool isGamepadActive = false;
@@ -37,6 +40,8 @@ struct Inputs
 
 	float moveVertical;
 	float moveHorizontal;
+	float rotation;
 	bool isGamepadActive;
+	sf::Vector2f mousePosition;
 };
 

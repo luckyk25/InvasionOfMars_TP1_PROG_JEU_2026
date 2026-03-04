@@ -97,6 +97,9 @@ void Game::getInputs()
 		if (Keyboard::isKeyPressed(Keyboard::Scan::W)) inputs.moveVertical -= 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::S)) inputs.moveVertical += 1.0f;
 		inputs.adjustInputs();
+
+		inputs.mousePosition = renderWindow.mapPixelToCoords(Mouse::getPosition(renderWindow));
+
 	}
 }
 
@@ -107,8 +110,15 @@ void Game::update()
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
 	mainView.move({ inputs.moveHorizontal * CAMERA_SPEED, inputs.moveVertical * CAMERA_SPEED });
-	player.move(inputs.moveHorizontal * PLAYER_SPEED, inputs.moveVertical * PLAYER_SPEED);
+	managePlayerMovment();
 	ajustCrossingWorldLimits();
+}
+
+void Game::managePlayerMovment() 
+{
+	player.move(inputs.moveHorizontal * PLAYER_SPEED, inputs.moveVertical * PLAYER_SPEED);
+	player.setPlayerDirection(inputs.mousePosition);
+
 }
 
 void Game::draw()
