@@ -63,6 +63,8 @@ bool Game::init()
 	music.setLooping(true);
 	music.play();
 	return true;
+
+
 }
 
 void Game::getInputs()
@@ -118,7 +120,7 @@ void Game::managePlayerMovment()
 {
 	player.move(inputs.moveHorizontal * PLAYER_SPEED, inputs.moveVertical * PLAYER_SPEED);
 	player.setPlayerDirection(inputs.mousePosition);
-
+	player.keepPlayerInBound();
 }
 
 void Game::draw()
@@ -136,7 +138,6 @@ void Game::draw()
 	renderWindow.setView(hudView);
 	hud.draw(renderWindow);
 	renderWindow.setView(mainView);
-
 	renderWindow.display();
 }
 
@@ -152,15 +153,16 @@ void Game::calculateDeltaTime()
 	deltaTime = clock.restart().asSeconds();
 }
 
+
 void Game::ajustCrossingWorldLimits()
 {
-	if (mainView.getCenter().x < WORLD_LIMIT_MIN_X)
-		mainView.setCenter({ WORLD_LIMIT_MIN_X, mainView.getCenter().y });
-	else if (mainView.getCenter().x > WORLD_LIMIT_MAX_X)
-		mainView.setCenter({ WORLD_LIMIT_MAX_X, mainView.getCenter().y });
+	Vector2f playerPosition = player.getPosition();
 
-	if (mainView.getCenter().y < WORLD_LIMIT_MIN_Y)
-		mainView.setCenter({ mainView.getCenter().x, WORLD_LIMIT_MIN_Y });
-	else if (mainView.getCenter().y > WORLD_LIMIT_MAX_Y)
-		mainView.setCenter({ mainView.getCenter().x, WORLD_LIMIT_MAX_Y });
+	if (playerPosition.x < WORLD_LIMIT_MIN_X) playerPosition.x = WORLD_LIMIT_MIN_X;
+	else if (playerPosition.x > WORLD_LIMIT_MAX_X) playerPosition.x = WORLD_LIMIT_MAX_X;
+
+	if (playerPosition.y < WORLD_LIMIT_MIN_Y) playerPosition.y = WORLD_LIMIT_MIN_Y;
+	else if (playerPosition.y > WORLD_LIMIT_MAX_Y) playerPosition.y = WORLD_LIMIT_MAX_Y;
+
+	mainView.setCenter(playerPosition);
 }

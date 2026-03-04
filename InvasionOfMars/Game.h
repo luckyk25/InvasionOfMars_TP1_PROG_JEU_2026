@@ -55,4 +55,5 @@ private:
 	Player player;
 
 	Alien aliens[3];
+
 };
