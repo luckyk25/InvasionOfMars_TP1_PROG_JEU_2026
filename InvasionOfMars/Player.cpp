@@ -35,8 +35,8 @@ void Player::keepPlayerInBound()
 	else if (getPosition().x > rightBound)
 			setPosition(rightBound, getPosition().y);
 
-	if (getPosition().y < upBound) 
-			setPosition(getPosition().y, upBound);
+	if (getPosition().y < upBound)
+		setPosition(getPosition().x, upBound);
 	else if (getPosition().y > downBound)
-			setPosition(getPosition().y, downBound);
+		setPosition(getPosition().x, downBound);
 }

@@ -111,7 +111,7 @@ void Game::update()
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
-	mainView.move({ inputs.moveHorizontal * CAMERA_SPEED, inputs.moveVertical * CAMERA_SPEED });
+	//mainView.move({ inputs.moveHorizontal * CAMERA_SPEED, inputs.moveVertical * CAMERA_SPEED });
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
 }
@@ -165,4 +165,5 @@ void Game::ajustCrossingWorldLimits()
 	else if (playerPosition.y > WORLD_LIMIT_MAX_Y) playerPosition.y = WORLD_LIMIT_MAX_Y;
 
 	mainView.setCenter(playerPosition);
+
 }
