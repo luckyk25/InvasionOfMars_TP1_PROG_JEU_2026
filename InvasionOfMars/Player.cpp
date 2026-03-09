@@ -40,3 +40,8 @@ void Player::keepPlayerInBound()
 	else if (getPosition().y > downBound)
 		setPosition(getPosition().x, downBound);
 }
+
+Vector2f Player::getVectorialPush()
+{
+	return vectorialPush;
+}

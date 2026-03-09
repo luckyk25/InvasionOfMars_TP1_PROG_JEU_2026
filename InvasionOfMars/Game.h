@@ -29,10 +29,16 @@ private:
 	const float WORLD_LIMIT_MAX_X = WORLD_WIDTH - WORLD_LIMIT_MIN_X;
 	const float WORLD_LIMIT_MAX_Y = WORLD_HEIGHT - WORLD_LIMIT_MIN_Y;
 
+	static const int NBR_BULLETS = 6;
+	Bullet bullets[NBR_BULLETS];
+	int recoil = 0;
+	const int MAX_RECOIL = 20;
+
 	bool init();
 	void getInputs();
 	void update();
 	void draw();
+	void fire();
 	bool unload();
 
 	void calculateDeltaTime();

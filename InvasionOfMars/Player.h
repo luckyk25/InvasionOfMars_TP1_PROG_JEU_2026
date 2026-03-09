@@ -10,6 +10,7 @@ public:
 	void setPlayerDirection(const Vector2f& direction);
 	void update();
 	void keepPlayerInBound();
+	Vector2f getVectorialPush();
 
 private:
 	Vector2f direction;
@@ -17,5 +18,6 @@ private:
 	float rightBound;
 	float upBound;
 	float downBound;
+	Vector2f vectorialPush = Vector2f(0.0f, 0.0f);
 };
 

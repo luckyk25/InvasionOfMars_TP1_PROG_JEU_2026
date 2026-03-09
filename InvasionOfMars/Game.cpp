@@ -57,6 +57,12 @@ bool Game::init()
 		aliens[i].activate();
 	}
 
+	for (int i = 0; i < NBR_BULLETS; i++)
+	{
+		bullets[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(1));
+		bullets[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
+	}
+
 	hud.hudInit();	
 
 	player.activate();
@@ -98,6 +104,7 @@ void Game::getInputs()
 		if (Keyboard::isKeyPressed(Keyboard::Scan::D)) inputs.moveHorizontal += 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::W)) inputs.moveVertical -= 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::S)) inputs.moveVertical += 1.0f;
+		inputs.fire = Mouse::isButtonPressed(Mouse::Button::Left);
 		inputs.adjustInputs();
 
 		inputs.mousePosition = renderWindow.mapPixelToCoords(Mouse::getPosition(renderWindow));
@@ -111,7 +118,11 @@ void Game::update()
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
-	//mainView.move({ inputs.moveHorizontal * CAMERA_SPEED, inputs.moveVertical * CAMERA_SPEED });
+	if (recoil > 0) recoil--;
+	if (inputs.fire) fire();
+	for (int i = 0; i < NBR_BULLETS; i++)
+		bullets[i].fly();
+
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
 }
@@ -133,7 +144,10 @@ void Game::draw()
 	for (int i = 0; i < 3; i++)
 		aliens[i].draw(renderWindow);
 
+
 	player.draw(renderWindow);
+	for (int i = 0; i < NBR_BULLETS; i++)
+		bullets[i].draw(renderWindow);
 	
 	renderWindow.setView(hudView);
 	hud.draw(renderWindow);
@@ -153,6 +167,21 @@ void Game::calculateDeltaTime()
 	deltaTime = clock.restart().asSeconds();
 }
 
+void Game::fire()
+{
+	//Recoil doit être à 0 pour avoir le droit de tirer concrètement
+	if (recoil > 0) return;
+
+	for (int i = 0; i < NBR_BULLETS; i++)
+	{
+		if (!bullets[i].isActive())
+		{
+			bullets[i].fire(player, player.getVectorialPush());
+			recoil = MAX_RECOIL;
+			break;
+		}
+	}
+}
 
 void Game::ajustCrossingWorldLimits()
 {

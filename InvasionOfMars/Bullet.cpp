@@ -21,7 +21,6 @@ void Bullet::fire(const GameObject& origin, const Vector2f& vectorialPush)
 	setPosition(origin.getPosition());
 	bulletMove.x = BULLET_SPEED * cos(origin.getRotation().asRadians());
 	bulletMove.y = BULLET_SPEED * sin(origin.getRotation().asRadians());
-	//Pour ajouter la vitesse du vaisseau à la vitesse du projectile
 	bulletMove += vectorialPush;
 
 	lifeTime = MAX_LIFETIME;
