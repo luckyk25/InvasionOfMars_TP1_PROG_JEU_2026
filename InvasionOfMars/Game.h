@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Alien.h"
 #include "Hud.h"
+#include "Bullet.h"
 
 using namespace sf;
 using std::optional;
