@@ -8,6 +8,7 @@ public:
 	void init(const int alienTextureNumber);
 
 private:
+	void spawnAlien();
 
 };
 

@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "ContentPipeline.h"
 
-
 Game::Game()
 {
 	renderWindow.create(VideoMode({ SCREEN_WIDTH, SCREEN_HEIGHT }, 32), "Invasion of Mars");// , Style::None, State::Fullscreen);

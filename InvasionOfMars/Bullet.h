@@ -12,10 +12,9 @@ class Bullet : public GameObject
 		void fly();
 
 	private: 
-		static const int MAX_LIFETIME = 120;
+		static const int MAX_LIFETIME = 180;
 		static const float BULLET_SPEED;
 		Vector2f bulletMove = Vector2f(0.0f, 0.0f);
 		Sound* bulletSound = nullptr;
 		int lifeTime = 0;
-		
 };
