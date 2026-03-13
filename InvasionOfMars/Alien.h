@@ -14,9 +14,15 @@ private:
 	const int SPAWN_SPEED = 60;
 	const Vector2i WORLD_SIZE;
 	const float MIN_DISTANCE = 100.f;
+	const float MOVE_SPEED = 4.0f;
+
+	int spawnTimer = 0;
+	Vector2f destination;
+	float moveAngle = 0.0f;
+	bool isMoving = false;
 
 	void setDestination(const Vector2f& destination);
 	void spawnAlien(sf::Vector2f playerPosition);
-	int spawnTimer = 0;
+	void stop();
 };
 

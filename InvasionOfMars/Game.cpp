@@ -122,7 +122,9 @@ void Game::update()
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
 
-	for (int i = 0; i < 3; i++)
+
+
+	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 		aliens[i].update(player.getPosition());
 
 	managePlayerMovment();

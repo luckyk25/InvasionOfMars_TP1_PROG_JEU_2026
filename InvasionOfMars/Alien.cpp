@@ -21,6 +21,20 @@ void Alien::update(sf::Vector2f playerPosition)
 	{
 		if (--spawnTimer <= 0) spawnAlien(playerPosition);
 	}
+	setDestination(playerPosition);
+	if (isMoving)
+	{
+		if ((abs(destination.x - getPosition().x) <= (MOVE_SPEED / 2.0f)) && (abs(destination.y - getPosition().y) <= (MOVE_SPEED / 2.0f)))
+		{
+			setPosition(destination.x, destination.y);
+
+			stop();
+		}
+		else
+		{
+			move(cos(moveAngle) * MOVE_SPEED, sin(moveAngle) * MOVE_SPEED);
+		}
+	}
 }
 
 void Alien::spawnAlien(sf::Vector2f playerPosition)
@@ -52,7 +66,15 @@ void Alien::draw(sf::RenderWindow& window)
 	window.draw(*this);
 }
 
-void Alien::setDestination()
+void Alien::setDestination(const Vector2f& destination)
 {
-	
+	this->destination = destination;
+
+	moveAngle = atan2f((destination.y - getPosition().y), (destination.x - getPosition().x));
+	isMoving = true;
+}
+
+void Alien::stop()
+{
+	isMoving = false;
 }
