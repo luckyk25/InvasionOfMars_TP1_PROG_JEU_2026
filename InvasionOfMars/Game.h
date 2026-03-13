@@ -45,6 +45,7 @@ private:
 
 	void ajustCrossingWorldLimits();
 	void managePlayerMovment();
+	void checkBulletAlienCollision();
 
 	RenderWindow renderWindow;
 	View mainView;

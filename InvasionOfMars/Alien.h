@@ -8,8 +8,6 @@ public:
 	~Alien();
 	void init(const int alienTextureNumber);
 	void update();
-	void draw(sf::RenderWindow& window);
-	static Vector2f destination;
 	static void setDestination(const Vector2f& destination);
 
 private:
@@ -18,6 +16,7 @@ private:
 	const float MIN_DISTANCE = 100.f;
 	const float MOVE_SPEED = 4.0f;
 
+	static Vector2f destination;
 	int spawnTimer = 0;
 	float moveAngle = 0.0f;
 	bool isMoving = false;

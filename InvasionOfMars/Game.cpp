@@ -119,6 +119,7 @@ void Game::update()
 	//vous devrez centrer la vue sur lui.
 	if (recoil > 0) recoil--;
 	if (inputs.fire) fire();
+
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
 
@@ -127,8 +128,24 @@ void Game::update()
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 		aliens[i].update();
 
+	checkBulletAlienCollision();
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
+}
+
+void Game::checkBulletAlienCollision() 
+{
+	for(int i = 0; i < NBR_BULLETS; i++) 
+	{
+		for(int j = 0; j < DEFAULT_ALIEN_COUNT; j++) 
+		{
+			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
+			{
+				bullets[i].deactivate();
+				aliens[j].deactivate();
+			}
+		}
+	}
 }
 
 void Game::managePlayerMovment() 
@@ -146,7 +163,7 @@ void Game::draw()
 	renderWindow.draw(*field);
 
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-		aliens[i].draw(renderWindow);
+			aliens[i].draw(renderWindow);
 
 	player.draw(renderWindow);
 

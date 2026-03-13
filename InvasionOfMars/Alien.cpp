@@ -32,7 +32,6 @@ void Alien::update()
 		if ((abs(destination.x - getPosition().x) <= (MOVE_SPEED / 2.0f)) && (abs(destination.y - getPosition().y) <= (MOVE_SPEED / 2.0f)))
 		{
 			setPosition(destination.x, destination.y);
-
 			stop();
 		}
 		else
@@ -64,11 +63,6 @@ void Alien::spawnAlien()
 
 	setPosition(alienXPosition, alienYPosition);
 	activate();
-}
-
-void Alien::draw(sf::RenderWindow& window)
-{
-	window.draw(*this);
 }
 
 void Alien::setDestination(const Vector2f& _destination)
