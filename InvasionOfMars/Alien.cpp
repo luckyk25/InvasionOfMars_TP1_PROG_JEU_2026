@@ -71,6 +71,7 @@ void Alien::setDestination(const Vector2f& destination)
 	this->destination = destination;
 
 	moveAngle = atan2f((destination.y - getPosition().y), (destination.x - getPosition().x));
+	setRotation(sf::radians(moveAngle));
 	isMoving = true;
 }
 

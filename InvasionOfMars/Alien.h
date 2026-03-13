@@ -20,6 +20,7 @@ private:
 	Vector2f destination;
 	float moveAngle = 0.0f;
 	bool isMoving = false;
+	Angle rotationAngle;
 
 	void setDestination(const Vector2f& destination);
 	void spawnAlien(sf::Vector2f playerPosition);
