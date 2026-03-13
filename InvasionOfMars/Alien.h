@@ -7,8 +7,10 @@ public:
 	Alien();
 	~Alien();
 	void init(const int alienTextureNumber);
-	void update(sf::Vector2f playerPosition);
+	void update();
 	void draw(sf::RenderWindow& window);
+	static Vector2f destination;
+	static void setDestination(const Vector2f& destination);
 
 private:
 	const int SPAWN_SPEED = 60;
@@ -17,13 +19,12 @@ private:
 	const float MOVE_SPEED = 4.0f;
 
 	int spawnTimer = 0;
-	Vector2f destination;
 	float moveAngle = 0.0f;
 	bool isMoving = false;
 	Angle rotationAngle;
 
-	void setDestination(const Vector2f& destination);
-	void spawnAlien(sf::Vector2f playerPosition);
+	void moveTowardDestination();
+	void spawnAlien();
 	void stop();
 };
 

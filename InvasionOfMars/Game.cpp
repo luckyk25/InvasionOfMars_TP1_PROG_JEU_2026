@@ -123,9 +123,9 @@ void Game::update()
 		bullets[i].fly();
 
 
-
+	Alien::setDestination(player.getPosition());
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-		aliens[i].update(player.getPosition());
+		aliens[i].update();
 
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
