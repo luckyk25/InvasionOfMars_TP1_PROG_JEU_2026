@@ -49,11 +49,11 @@ bool Game::init()
 	player.init();
 	player.setPosition(WORLD_CENTER_X, WORLD_CENTER_Y);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 	{
-		aliens[i].init(i);
-		aliens[i].setPosition(WORLD_CENTER_X - 200 + i * 200, WORLD_CENTER_Y + 200);
-		aliens[i].activate();
+		aliens[i].init(rand() % 3);
+		//aliens[i].setPosition(WORLD_CENTER_X - 200 + i * 200, WORLD_CENTER_Y + 200);
+		//aliens[i].activate();
 	}
 
 	for (int i = 0; i < NBR_BULLETS; i++)
@@ -122,6 +122,9 @@ void Game::update()
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
 
+	for (int i = 0; i < 3; i++)
+		aliens[i].update(player.getPosition());
+
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
 }
@@ -140,14 +143,15 @@ void Game::draw()
 	renderWindow.setView(mainView);
 	renderWindow.draw(*field);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 		aliens[i].draw(renderWindow);
 
-
 	player.draw(renderWindow);
+
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
 	
+
 	renderWindow.setView(hudView);
 	hud.draw(renderWindow);
 	renderWindow.setView(mainView);

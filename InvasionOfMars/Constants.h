@@ -15,4 +15,4 @@ static const float ROTATION_SPEED = 50.0f;
 
 const float DIAGONAL_RATIO = 0.70710678f;
 
-const int DEFAULT_ALIEN_COUNT = 4;
+const int DEFAULT_ALIEN_COUNT = 30;
