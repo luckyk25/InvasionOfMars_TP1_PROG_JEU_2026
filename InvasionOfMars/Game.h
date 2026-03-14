@@ -49,6 +49,7 @@ private:
 	void ajustCrossingWorldLimits();
 	void managePlayerMovment();
 	void managePlayerRespawn();
+	void manageAlienSpawn();
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
 

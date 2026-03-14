@@ -23,7 +23,6 @@ void Alien::update()
 {
 	if (!isActive())
 	{
-		if (--spawnTimer <= 0) spawnAlien();
 		return;
 	}
 	
@@ -45,8 +44,6 @@ void Alien::update()
 
 void Alien::spawnAlien()
 {
-	spawnTimer = ALIEN_SPAWN_SPEED;
-
 	int alienSizeX = getGlobalBounds().size.x;
 	int alienSizeY = getGlobalBounds().size.y;
 

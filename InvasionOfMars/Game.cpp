@@ -129,6 +129,7 @@ void Game::update()
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 		aliens[i].update();
 
+	manageAlienSpawn();
 	checkBulletAlienCollision();
 
 	if (playerInvincible)
@@ -144,8 +145,22 @@ void Game::update()
 	managePlayerMovment();
 	managePlayerRespawn();
 	ajustCrossingWorldLimits();
+}
 
-
+void Game::manageAlienSpawn() 
+{
+	if (alienSpawnTimer > 0) {
+		alienSpawnTimer--;
+	}
+	else {
+		for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++) {
+			if (!aliens[i].isActive()) {
+				aliens[i].spawnAlien();
+				break;
+			}
+		}
+		alienSpawnTimer = ALIEN_SPAWN_SPEED;
+	}
 }
 
 void Game::checkPlayerAlienCollision() 
@@ -185,6 +200,17 @@ void Game::managePlayerRespawn()
 		{
 			player.activate();
 			playerInvincibleTimer = INVINCIBLE_TIMER;
+			/*
+			Façon de faire trouvé grâche à Gemini Ai.
+			Je n'avais pas le temps de consulter la documentation sfml ou celle du prof pour trouver
+			comment rendre la texture transparente, alors j'ai utilisé l'ia pour le trouver plus rapidement.
+			J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
+			*/
+		
+			Color color = player.getColor();
+			color.a = 80;
+			player.setColor(color);
+
 			playerInvincible = true;
 			Alien::changeDirection();
 		}
