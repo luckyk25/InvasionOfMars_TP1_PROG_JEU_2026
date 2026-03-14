@@ -10,6 +10,7 @@ public:
 	void update();
 	static void setDestination(const Vector2f& destination);
 	static void changeDirection();
+	void spawnAlien();
 private:
 
 	const Vector2i WORLD_SIZE;
@@ -23,7 +24,6 @@ private:
 	Angle rotationAngle;
 
 	void moveTowardDestination();
-	void spawnAlien();
 	void stop();
 };
 

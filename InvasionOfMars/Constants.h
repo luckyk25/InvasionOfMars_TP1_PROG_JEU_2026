@@ -22,7 +22,8 @@ const int MAX_RECOIL = 10;
 static const int NBR_BULLETS = 20;
 
 //Game
-const int PLAYER_RESPAWN_TIME = 180;
+const int PLAYER_RESPAWN_TIME = 120;
+const int INVINCIBLE_TIMER = 180;
 
 //Alien
 const int DEFAULT_ALIEN_COUNT = 30;

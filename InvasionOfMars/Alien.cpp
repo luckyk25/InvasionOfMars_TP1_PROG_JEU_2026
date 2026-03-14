@@ -16,6 +16,7 @@ void Alien::init(const int alienTextureNumber)
 {
 	setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
 	toward = true;
+	spawnTimer = ALIEN_SPAWN_SPEED;
 }
 
 void Alien::update()

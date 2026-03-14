@@ -63,7 +63,7 @@ bool Game::init()
 		bullets[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
 	}
 
-	hud.hudInit();	
+	hud.hudInit();
 
 	player.activate();
 	music.setLooping(true);
@@ -130,19 +130,22 @@ void Game::update()
 		aliens[i].update();
 
 	checkBulletAlienCollision();
-	checkPlayerAlienCollision();
+
+	if (playerInvincible)
+	{
+		if (--playerInvincibleTimer <= 0)
+			playerInvincible = false;
+	}
+	else
+	{
+		checkPlayerAlienCollision();
+	}
+
 	managePlayerMovment();
+	managePlayerRespawn();
 	ajustCrossingWorldLimits();
 
-	if(!player.isActive() && playerRespawnTimer > 0)
-	{
-		playerRespawnTimer--;
-		if(playerRespawnTimer <= 0 )
-		{
-			player.activate();
-			Alien::changeDirection();
-		}
-	}
+
 }
 
 void Game::checkPlayerAlienCollision() 
@@ -169,6 +172,21 @@ void Game::checkBulletAlienCollision()
 				bullets[i].deactivate();
 				aliens[j].deactivate();
 			}
+		}
+	}
+}
+
+void Game::managePlayerRespawn() 
+{
+	if (!player.isActive() && playerRespawnTimer > 0)
+	{
+		playerRespawnTimer--;
+		if (playerRespawnTimer <= 0)
+		{
+			player.activate();
+			playerInvincibleTimer = INVINCIBLE_TIMER;
+			playerInvincible = true;
+			Alien::changeDirection();
 		}
 	}
 }

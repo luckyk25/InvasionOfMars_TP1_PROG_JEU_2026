@@ -29,11 +29,14 @@ private:
 	const float WORLD_LIMIT_MAX_X = WORLD_WIDTH - WORLD_LIMIT_MIN_X;
 	const float WORLD_LIMIT_MAX_Y = WORLD_HEIGHT - WORLD_LIMIT_MIN_Y;
 
-
 	Bullet bullets[NBR_BULLETS];
 	int recoil = 0;
-	float playerRespawnTimer = 0.0f;
 
+	float playerRespawnTimer = 0.0f;
+	float playerInvincibleTimer = 0.0f;
+	int alienSpawnTimer = ALIEN_SPAWN_SPEED;
+	
+	bool playerInvincible = false;
 	bool init();
 	void getInputs();
 	void update();
@@ -45,6 +48,7 @@ private:
 
 	void ajustCrossingWorldLimits();
 	void managePlayerMovment();
+	void managePlayerRespawn();
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
 
