@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-const float Bullet::BULLET_SPEED = 10.0f;
+const float Bullet::BULLET_SPEED = 30.0f;
 
 Bullet::Bullet()
 {

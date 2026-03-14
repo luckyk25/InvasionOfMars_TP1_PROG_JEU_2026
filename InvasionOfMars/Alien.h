@@ -11,10 +11,9 @@ public:
 	static void setDestination(const Vector2f& destination);
 	static void changeDirection();
 private:
-	const int SPAWN_SPEED = 60;
+
 	const Vector2i WORLD_SIZE;
 	const float MIN_DISTANCE = 100.f;
-	const float MOVE_SPEED = 4.0f;
 
 	static Vector2f destination;
 	static bool toward;

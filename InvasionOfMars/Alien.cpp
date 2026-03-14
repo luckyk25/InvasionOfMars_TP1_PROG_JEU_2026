@@ -30,21 +30,21 @@ void Alien::update()
 
 	if (isMoving)
 	{
-		if ((abs(destination.x - getPosition().x) <= (MOVE_SPEED / 2.0f)) && (abs(destination.y - getPosition().y) <= (MOVE_SPEED / 2.0f)))
+		if ((abs(destination.x - getPosition().x) <= (ALIEN_MOVE_SPEED / 2.0f)) && (abs(destination.y - getPosition().y) <= (ALIEN_MOVE_SPEED / 2.0f)))
 		{
 			setPosition(destination.x, destination.y);
 			stop();
 		}
 		else
 		{
-			move(cos(moveAngle) * MOVE_SPEED, sin(moveAngle) * MOVE_SPEED);
+			move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
 		}
 	}
 }
 
 void Alien::spawnAlien()
 {
-	spawnTimer = SPAWN_SPEED;
+	spawnTimer = ALIEN_SPAWN_SPEED;
 
 	int alienSizeX = getGlobalBounds().size.x;
 	int alienSizeY = getGlobalBounds().size.y;
