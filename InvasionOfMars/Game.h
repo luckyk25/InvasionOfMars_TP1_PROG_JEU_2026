@@ -28,11 +28,13 @@ private:
 	const float WORLD_LIMIT_MIN_Y = SCREEN_HEIGHT / 2.0f;
 	const float WORLD_LIMIT_MAX_X = WORLD_WIDTH - WORLD_LIMIT_MIN_X;
 	const float WORLD_LIMIT_MAX_Y = WORLD_HEIGHT - WORLD_LIMIT_MIN_Y;
+	const int PLAYER_RESPAWN_TIME = 180;
+	const int MAX_RECOIL = 20;
 
 	static const int NBR_BULLETS = 10;
 	Bullet bullets[NBR_BULLETS];
 	int recoil = 0;
-	const int MAX_RECOIL = 20;
+	float playerRespawnTimer = 0.0f;
 
 	bool init();
 	void getInputs();
@@ -46,6 +48,7 @@ private:
 	void ajustCrossingWorldLimits();
 	void managePlayerMovment();
 	void checkBulletAlienCollision();
+	void checkPlayerAlienCollision();
 
 	RenderWindow renderWindow;
 	View mainView;
@@ -63,5 +66,4 @@ private:
 	Player player;
 
 	Alien aliens[DEFAULT_ALIEN_COUNT];
-
 };

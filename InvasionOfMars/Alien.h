@@ -9,7 +9,7 @@ public:
 	void init(const int alienTextureNumber);
 	void update();
 	static void setDestination(const Vector2f& destination);
-
+	static void changeDirection();
 private:
 	const int SPAWN_SPEED = 60;
 	const Vector2i WORLD_SIZE;
@@ -17,6 +17,7 @@ private:
 	const float MOVE_SPEED = 4.0f;
 
 	static Vector2f destination;
+	static bool toward;
 	int spawnTimer = 0;
 	float moveAngle = 0.0f;
 	bool isMoving = false;

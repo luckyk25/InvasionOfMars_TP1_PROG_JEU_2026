@@ -45,6 +45,7 @@ bool Game::init()
 	field = new Sprite(ContentPipeline::getInstance().getBackgroundTexture());
 	field->setPosition({ 0.0f, 0.0f });
 	field->setColor(Color(193, 68, 14, 255)); //Couleur "Rouge sol de Mars"
+	player.setCollisionCircleRadius(32);
 
 	player.init();
 	player.setPosition(WORLD_CENTER_X, WORLD_CENTER_Y);
@@ -118,7 +119,7 @@ void Game::update()
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
 	if (recoil > 0) recoil--;
-	if (inputs.fire) fire();
+	if (inputs.fire && player.isActive()) fire();
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
@@ -129,8 +130,32 @@ void Game::update()
 		aliens[i].update();
 
 	checkBulletAlienCollision();
+	checkPlayerAlienCollision();
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
+
+	if(!player.isActive() && playerRespawnTimer > 0)
+	{
+		playerRespawnTimer--;
+		if(playerRespawnTimer <= 0 )
+		{
+			player.activate();
+			Alien::changeDirection();
+		}
+	}
+}
+
+void Game::checkPlayerAlienCollision() 
+{
+	for(int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
+	{
+		if (aliens[i].isActive() && player.isCircleColliding(aliens[i])) 
+		{
+			player.deactivate();
+			playerRespawnTimer = PLAYER_RESPAWN_TIME;
+			Alien::changeDirection();
+		}
+	}
 }
 
 void Game::checkBulletAlienCollision() 
@@ -162,8 +187,10 @@ void Game::draw()
 	renderWindow.setView(mainView);
 	renderWindow.draw(*field);
 
-	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-			aliens[i].draw(renderWindow);
+	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++) 
+	{
+		aliens[i].draw(renderWindow);
+	}
 
 	player.draw(renderWindow);
 

@@ -1,8 +1,8 @@
 #include "Alien.h"
 #include "ContentPipeline.h"
 
-
 Vector2f Alien::destination;
+bool Alien::toward;
 Alien::Alien() : WORLD_SIZE(WORLD_WIDTH, WORLD_HEIGHT)
 {
 }
@@ -15,6 +15,7 @@ Alien::~Alien()
 void Alien::init(const int alienTextureNumber)
 {
 	setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
+	toward = true;
 }
 
 void Alien::update()
@@ -24,7 +25,7 @@ void Alien::update()
 		if (--spawnTimer <= 0) spawnAlien();
 		return;
 	}
-
+	
 	moveTowardDestination();
 
 	if (isMoving)
@@ -65,6 +66,11 @@ void Alien::spawnAlien()
 	activate();
 }
 
+void Alien::changeDirection() 
+{
+	toward = !toward;
+}
+
 void Alien::setDestination(const Vector2f& _destination)
 {
 	destination = _destination;
@@ -73,9 +79,12 @@ void Alien::setDestination(const Vector2f& _destination)
 void Alien::moveTowardDestination() 
 {
 	moveAngle = atan2f((destination.y - getPosition().y), (destination.x - getPosition().x));
+	if (!toward)
+		moveAngle += PI;
 	setRotation(sf::radians(moveAngle));
-	isMoving = true;	
+	isMoving = true;
 }
+
 
 void Alien::stop()
 {
