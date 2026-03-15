@@ -134,8 +134,13 @@ void Game::update()
 
 	if (playerInvincible)
 	{
-		if (--playerInvincibleTimer <= 0)
+		if (--playerInvincibleTimer <= 0) 
+		{
 			playerInvincible = false;
+			Color color = player.getColor();
+			color.a = 255;
+			player.setColor(color);
+		}
 	}
 	else
 	{
