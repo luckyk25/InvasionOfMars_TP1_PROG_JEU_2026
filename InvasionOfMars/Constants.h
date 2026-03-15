@@ -34,3 +34,11 @@ const float ALIEN_MOVE_SPEED = 4.0f;
 //Math Helpers
 const float DIAGONAL_RATIO = 0.70710678f;
 const float PI = 3.14159265f;
+
+//Hud
+const std::string PAUSE_TEXTE = "Pause";
+const int DEFAULT_SCORE_INCREMENT = 100;
+
+const int BONUS_SCORE_INCREMENT_LIMIT = 500;
+const int BONUS_SCORE_INCREMENT = 10;
+const int BONUS_SCORE_TIMER = 60;

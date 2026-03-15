@@ -137,7 +137,8 @@ void Game::update()
 
 	manageAlienSpawn();
 	checkBulletAlienCollision();
-
+	hud.update();
+	
 	if (playerInvincible)
 	{
 		if (--playerInvincibleTimer <= 0) 
@@ -196,10 +197,6 @@ void Game::checkPlayerAlienCollision()
 		{
 			player.deactivate();
 			playerRespawnTimer = PLAYER_RESPAWN_TIME;
-			for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-			{
-				aliens[i].stop();
-			}
 			Alien::changeDirection();
 		}
 	}
@@ -241,6 +238,7 @@ void Game::checkBulletAlienCollision()
 			{
 				bullets[i].deactivate();
 				aliens[j].deactivate();
+				hud.incrementScore();
 			}
 		}
 	}
