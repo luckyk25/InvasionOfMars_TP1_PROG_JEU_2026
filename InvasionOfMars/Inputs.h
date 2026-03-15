@@ -21,7 +21,7 @@ struct Inputs
 		//que le gamepad soit actif ou non (voir game.getInputs)
 		fire = false;
 		bool isGamepadActive = false;
-		
+		pause = false;
 	}	
 
 	//Portée analogue -100 à 100
@@ -44,6 +44,7 @@ struct Inputs
 	float moveHorizontal;
 	float rotation;
 	bool fire;
+	bool pause;
 	bool isGamepadActive;
 	sf::Vector2f mousePosition;
 };

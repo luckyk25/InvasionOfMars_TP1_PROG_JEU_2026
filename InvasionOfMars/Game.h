@@ -52,6 +52,7 @@ private:
 	void manageAlienSpawn();
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
+	void managePause();
 
 	RenderWindow renderWindow;
 	View mainView;
@@ -66,6 +67,7 @@ private:
 	Music music;
 
 	Sprite* field = nullptr;
+	bool isInPause = false;
 	Player player;
 
 	Alien aliens[DEFAULT_ALIEN_COUNT];

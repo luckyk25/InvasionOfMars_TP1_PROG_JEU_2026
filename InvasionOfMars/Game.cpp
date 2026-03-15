@@ -82,6 +82,10 @@ void Game::getInputs()
 	{
 		//x sur la fenêtre
 		if (event->is<Event::Closed>())	renderWindow.close();
+		if (const Event::KeyPressed* keyPressed = event->getIf<Event::KeyPressed>())
+		{
+			if (keyPressed->scancode == Keyboard::Scan::P) inputs.pause = true;
+		}
 	}
 
 	if (Joystick::isConnected(0))
@@ -104,6 +108,7 @@ void Game::getInputs()
 		if (Keyboard::isKeyPressed(Keyboard::Scan::D)) inputs.moveHorizontal += 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::W)) inputs.moveVertical -= 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::S)) inputs.moveVertical += 1.0f;
+
 		inputs.fire = Mouse::isButtonPressed(Mouse::Button::Left);
 		inputs.adjustInputs();
 
@@ -115,6 +120,8 @@ void Game::getInputs()
 //Vous devrez centrer la vue sur le player: https://www.sfml-dev.org/tutorials/2.6/graphics-view-fr.php
 void Game::update()
 {
+	managePause();
+	if (isInPause) return;
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
@@ -123,7 +130,6 @@ void Game::update()
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
-
 
 	Alien::setDestination(player.getPosition());
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
@@ -168,6 +174,20 @@ void Game::manageAlienSpawn()
 	}
 }
 
+
+void Game::managePause()
+{
+	if (inputs.pause)
+	{
+		isInPause = !isInPause;
+
+		if (isInPause)
+			music.pause();
+		else
+			music.play();
+	}
+}
+
 void Game::checkPlayerAlienCollision() 
 {
 	for(int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
@@ -176,22 +196,11 @@ void Game::checkPlayerAlienCollision()
 		{
 			player.deactivate();
 			playerRespawnTimer = PLAYER_RESPAWN_TIME;
-			Alien::changeDirection();
-		}
-	}
-}
-
-void Game::checkBulletAlienCollision() 
-{
-	for(int i = 0; i < NBR_BULLETS; i++) 
-	{
-		for(int j = 0; j < DEFAULT_ALIEN_COUNT; j++) 
-		{
-			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
+			for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 			{
-				bullets[i].deactivate();
-				aliens[j].deactivate();
+				aliens[i].stop();
 			}
+			Alien::changeDirection();
 		}
 	}
 }
@@ -221,6 +230,22 @@ void Game::managePlayerRespawn()
 		}
 	}
 }
+
+void Game::checkBulletAlienCollision() 
+{
+	for(int i = 0; i < NBR_BULLETS; i++) 
+	{
+		for(int j = 0; j < DEFAULT_ALIEN_COUNT; j++) 
+		{
+			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
+			{
+				bullets[i].deactivate();
+				aliens[j].deactivate();
+			}
+		}
+	}
+}
+
 
 void Game::managePlayerMovment() 
 {

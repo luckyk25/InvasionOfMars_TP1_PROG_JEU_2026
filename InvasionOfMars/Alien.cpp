@@ -21,25 +21,10 @@ void Alien::init(const int alienTextureNumber)
 
 void Alien::update()
 {
-	if (!isActive())
-	{
-		return;
-	}
+	if (!isActive()) return;
 	
 	moveTowardDestination();
-
-	if (isMoving)
-	{
-		if ((abs(destination.x - getPosition().x) <= (ALIEN_MOVE_SPEED / 2.0f)) && (abs(destination.y - getPosition().y) <= (ALIEN_MOVE_SPEED / 2.0f)))
-		{
-			setPosition(destination.x, destination.y);
-			stop();
-		}
-		else
-		{
-			move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
-		}
-	}
+	move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
 }
 
 void Alien::spawnAlien()
