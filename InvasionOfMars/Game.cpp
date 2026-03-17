@@ -113,7 +113,6 @@ void Game::getInputs()
 		inputs.adjustInputs();
 
 		inputs.mousePosition = renderWindow.mapPixelToCoords(Mouse::getPosition(renderWindow));
-
 	}
 }
 
@@ -130,15 +129,17 @@ void Game::update()
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
-
+	
 	Alien::setDestination(player.getPosition());
+	
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 		aliens[i].update();
 
 	manageAlienSpawn();
 	checkBulletAlienCollision();
 	hud.update();
-	
+	if(!player.isActive())
+		managePlayerRespawn();
 	if (playerInvincible)
 	{
 		if (--playerInvincibleTimer <= 0) 
@@ -149,13 +150,9 @@ void Game::update()
 			player.setColor(color);
 		}
 	}
-	else
-	{
-		checkPlayerAlienCollision();
-	}
+	checkPlayerAlienCollision();
 
 	managePlayerMovment();
-	managePlayerRespawn();
 	ajustCrossingWorldLimits();
 }
 
@@ -191,20 +188,25 @@ void Game::managePause()
 
 void Game::checkPlayerAlienCollision() 
 {
+	if (!player.isActive()) return;
 	for(int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 	{
 		if (aliens[i].isActive() && player.isCircleColliding(aliens[i])) 
 		{
-			player.deactivate();
-			playerRespawnTimer = PLAYER_RESPAWN_TIME;
-			Alien::changeDirection();
+			if(!playerInvincible)
+			{				
+				Alien::changeDirection();
+				player.deactivate();
+				playerRespawnTimer = PLAYER_RESPAWN_TIME;
+				break;
+			}
 		}
 	}
 }
 
 void Game::managePlayerRespawn() 
 {
-	if (!player.isActive() && playerRespawnTimer > 0)
+	if (playerRespawnTimer > 0)
 	{
 		playerRespawnTimer--;
 		if (playerRespawnTimer <= 0)
@@ -217,12 +219,13 @@ void Game::managePlayerRespawn()
 			comment rendre la texture transparente, alors j'ai utilisé l'ia pour le trouver plus rapidement.
 			J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
 			*/
-		
+
 			Color color = player.getColor();
 			color.a = 80;
 			player.setColor(color);
 
 			playerInvincible = true;
+
 			Alien::changeDirection();
 		}
 	}
@@ -259,17 +262,16 @@ void Game::draw()
 	renderWindow.setView(mainView);
 	renderWindow.draw(*field);
 
+	player.draw(renderWindow);
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++) 
 	{
 		aliens[i].draw(renderWindow);
 	}
 
-	player.draw(renderWindow);
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
 	
-
 	renderWindow.setView(hudView);
 	hud.draw(renderWindow);
 	renderWindow.setView(mainView);
@@ -279,7 +281,6 @@ void Game::draw()
 bool Game::unload()
 {
 	if (field != nullptr) delete field;
-
 	return true;
 }
 

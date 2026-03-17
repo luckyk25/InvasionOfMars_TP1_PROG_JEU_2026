@@ -16,15 +16,15 @@ void Alien::init(const int alienTextureNumber)
 {
 	setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
 	toward = true;
+	isMoving = true;
 	spawnTimer = ALIEN_SPAWN_SPEED;
 }
 
 void Alien::update()
 {
-	if (!isActive()) return;
-	
+	if (!isActive() || !isMoving) return;
 	moveTowardDestination();
-	move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
+
 }
 
 void Alien::spawnAlien()
@@ -61,13 +61,27 @@ void Alien::setDestination(const Vector2f& _destination)
 
 void Alien::moveTowardDestination() 
 {
-	moveAngle = atan2f((destination.y - getPosition().y), (destination.x - getPosition().x));
-	if (!toward)
-		moveAngle += PI;
+	float dx = destination.x - getPosition().x;
+	float dy = destination.y - getPosition().y;
+	float dist = sqrt(dx * dx + dy * dy);
+
+	if (toward)
+	{
+		if (dist < 15.0f)
+		{
+			return;
+		}
+	}
+	moveAngle = atan2f(dy, dx);
+	if (!toward) moveAngle += PI;
 	setRotation(sf::radians(moveAngle));
-	isMoving = true;
+	move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
 }
 
+void Alien::run() 
+{
+	isMoving = true;
+}
 
 void Alien::stop()
 {

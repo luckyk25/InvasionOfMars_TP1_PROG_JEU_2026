@@ -26,7 +26,7 @@ const int PLAYER_RESPAWN_TIME = 120;
 const int INVINCIBLE_TIMER = 180;
 
 //Alien
-const int DEFAULT_ALIEN_COUNT = 30;
+const int DEFAULT_ALIEN_COUNT = 60;
 const int ALIEN_SPAWN_SPEED = 60;
 const float ALIEN_MOVE_SPEED = 4.0f;
 
