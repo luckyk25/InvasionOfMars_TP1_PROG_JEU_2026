@@ -14,9 +14,16 @@ public:
 	void draw(RenderWindow& renderWindow);
 	void incrementScore();
 	void update();
+	void decreaseNumberOfLives();
+	void displayPause(const bool isPause);
+	bool isDead();
 private:
 	Text* bidon = nullptr;
 	Text* scoreText = nullptr;
+	Text* nbLivesText = nullptr;
+	Text* pauseText = nullptr;
+	bool pauseState = false;
+	int nbLifes = DEFAULT_LIVES_NUMBER;
 	float scoreBonusTimer = BONUS_SCORE_TIMER;
 
 	int score;

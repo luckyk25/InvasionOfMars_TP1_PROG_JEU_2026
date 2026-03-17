@@ -37,6 +37,7 @@ private:
 	int alienSpawnTimer = ALIEN_SPAWN_SPEED;
 	
 	bool playerInvincible = false;
+	bool gameOver = false;
 	bool init();
 	void getInputs();
 	void update();

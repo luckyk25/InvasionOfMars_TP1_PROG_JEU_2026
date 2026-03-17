@@ -38,6 +38,7 @@ const float PI = 3.14159265f;
 //Hud
 const std::string PAUSE_TEXTE = "Pause";
 const int DEFAULT_SCORE_INCREMENT = 100;
+const int DEFAULT_LIVES_NUMBER = 5;
 
 const int BONUS_SCORE_INCREMENT_LIMIT = 500;
 const int BONUS_SCORE_INCREMENT = 10;

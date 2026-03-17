@@ -76,6 +76,7 @@ bool Game::init()
 void Game::getInputs()
 {
 	inputs.reset();
+	if (gameOver) return;
 
 	//On passe l'événement en référence et celui-ci est chargé du dernier événement reçu!
 	while (const optional event = renderWindow.pollEvent())
@@ -120,7 +121,8 @@ void Game::getInputs()
 void Game::update()
 {
 	managePause();
-	if (isInPause) return;
+	if (isInPause || gameOver) return;
+	if (hud.isDead()) gameOver = true;
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
@@ -179,10 +181,16 @@ void Game::managePause()
 	{
 		isInPause = !isInPause;
 
-		if (isInPause)
+		if (isInPause) 
+		{
 			music.pause();
-		else
+			hud.displayPause(true);
+		}
+		else 
+		{
 			music.play();
+			hud.displayPause(false);
+		}
 	}
 }
 
@@ -197,6 +205,7 @@ void Game::checkPlayerAlienCollision()
 			{				
 				Alien::changeDirection();
 				player.deactivate();
+				hud.decreaseNumberOfLives();
 				playerRespawnTimer = PLAYER_RESPAWN_TIME;
 				break;
 			}
@@ -267,7 +276,6 @@ void Game::draw()
 	{
 		aliens[i].draw(renderWindow);
 	}
-
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
