@@ -53,13 +53,13 @@ void Hud::incrementScore()
 	int currentKillIncrement = DEFAULT_SCORE_INCREMENT;
 	if(scoreBonusTimer > 0)
 	{
-		currentKillIncrement += BONUS_SCORE_INCREMENT;
-		if (currentKillIncrement > BONUS_SCORE_INCREMENT_LIMIT)
-			currentKillIncrement = BONUS_SCORE_INCREMENT_LIMIT;
+		currentKillIncrement += EXTRA_SCORE_INCREMENT;
+		if (currentKillIncrement > EXTRA_SCORE_INCREMENT_LIMIT)
+			currentKillIncrement = EXTRA_SCORE_INCREMENT_LIMIT;
 	}
 	score += currentKillIncrement;
 
-	scoreBonusTimer = BONUS_SCORE_TIMER;
+	scoreBonusTimer = EXTRA_SCORE_TIMER;
 
 
 	scoreText->setString("Score" + std::to_string(score));

@@ -24,7 +24,7 @@ private:
 	Text* gameOverText = nullptr;
 	bool pauseState = false;
 	int nbLifes = DEFAULT_LIVES_NUMBER;
-	float scoreBonusTimer = BONUS_SCORE_TIMER;
+	float scoreBonusTimer = EXTRA_SCORE_TIMER;
 
 	int score;
 };

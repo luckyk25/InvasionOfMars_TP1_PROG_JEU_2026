@@ -20,4 +20,3 @@ private:
 	float downBound;
 	Vector2f vectorialPush = Vector2f(0.0f, 0.0f);
 };
-

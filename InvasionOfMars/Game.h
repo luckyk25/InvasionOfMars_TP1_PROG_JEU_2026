@@ -72,6 +72,6 @@ private:
 	bool isInPause = false;
 	Player player;
 
-	Bonus bonuses[NBR_BONUS_TYPE][NBR_OF_BONUS/NBR_BONUS_TYPE];
+	Bonus bonuses[NBR_BONUS_TYPE][NBR_OF_BONUS];
 	Alien aliens[DEFAULT_ALIEN_COUNT];
 };

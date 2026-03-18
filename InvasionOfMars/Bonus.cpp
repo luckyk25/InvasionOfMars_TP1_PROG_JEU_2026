@@ -10,5 +10,20 @@ Bonus::Bonus()
 void Bonus::init(const int textureNumber)
 {
 	setTexture(ContentPipeline::getInstance().getLogoTexture(textureNumber));
-	durationTimer = BONUS_SCORE_TIMER;
+	durationTimer = EXTRA_SCORE_TIMER;
+}
+
+void Bonus::update() 
+{
+	if (--durationTimer <= 0) 
+	{
+		isRunning = true;
+		durationTimer = EXTRA_SCORE_TIMER;
+	}
+}
+
+void Bonus::spawnBonus(Vector2f position) 
+{
+	this->setPosition(position);
+	this->activate();
 }

@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "ContentPipeline.h"
-
+#include <iostream>
 Game::Game()
 {
 	renderWindow.create(VideoMode({ SCREEN_WIDTH, SCREEN_HEIGHT }, 32), "Invasion of Mars");// , Style::None, State::Fullscreen);
@@ -61,7 +61,7 @@ bool Game::init()
 	}
 
 	for (int i = 0; i < NBR_BONUS_TYPE; i++)
-		for (int j = 0; j < NBR_OF_BONUS/NBR_BONUS_TYPE; j++)
+		for (int j = 0; j < NBR_OF_BONUS; j++)
 			bonuses[i][j].init(i);
 
 	hud.hudInit();
@@ -228,27 +228,25 @@ void Game::checkBulletAlienCollision()
 		{
 			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
 			{
-				switch((rand() % BONUS_SPAWN_RATE) + 0)
+				int randomNumber = (rand() % BONUS_SPAWN_RATE) + 0;
+				switch(randomNumber)
 				{
 					case NUKE_NUMBER:
-						for (int i = 0; i < NBR_OF_BONUS/NBR_BONUS_TYPE; i++)
+						for (int i = 0; i < NBR_OF_BONUS; i++)
 						{
 							if (!bonuses[NUKE_NUMBER][i].isActive())
 							{
-								bonuses[NUKE_NUMBER][i].setPosition(aliens[i].getPosition());
-								bonuses[NUKE_NUMBER][i].activate();
-								recoil = MAX_RECOIL;
+								bonuses[NUKE_NUMBER][i].spawnBonus(aliens[j].getPosition());
 								break;
 							}
 						}
 						break;
 					case FAST_NUMBER:
-						for (int i = 0; i < NBR_OF_BONUS / NBR_BONUS_TYPE; i++)
+						for (int i = 0; i < NBR_OF_BONUS; i++)
 						{
 							if (!bonuses[FAST_NUMBER][i].isActive())
 							{
-								bonuses[FAST_NUMBER][i].setPosition(aliens[i].getPosition());
-								bonuses[FAST_NUMBER][i].activate();
+								bonuses[FAST_NUMBER][i].spawnBonus(aliens[j].getPosition());
 								break;
 							}
 						}
@@ -285,7 +283,7 @@ void Game::draw()
 		bullets[i].draw(renderWindow);
 	
 	for (int i = 0; i < NBR_BONUS_TYPE; i++)
-		for (int j = 0; j < NBR_OF_BONUS/NBR_BONUS_TYPE; j++)
+		for (int j = 0; j < NBR_OF_BONUS; j++)
 			bonuses[i][j].draw(renderWindow);
 
 	renderWindow.setView(hudView);
