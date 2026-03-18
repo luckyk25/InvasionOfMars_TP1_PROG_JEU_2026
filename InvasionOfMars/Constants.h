@@ -24,11 +24,20 @@ static const int NBR_BULLETS = 20;
 //Game
 const int PLAYER_RESPAWN_TIME = 120;
 const int INVINCIBLE_TIMER = 180;
+const int BONUS_SPAWN_RATE = 24;
+const int NBR_OF_BONUS = 12;
+const int NBR_BONUS_TYPE = 2;
+
+//Boosters
+const int NUKE_NUMBER = 0;
+const int FAST_NUMBER = 1;
+const int POWER_UP_DURATION = 15;
 
 //Alien
-const int DEFAULT_ALIEN_COUNT = 160;
 const int ALIEN_SPAWN_SPEED = 60;
+const int DEFAULT_ALIEN_COUNT = 160;
 const float ALIEN_MOVE_SPEED = 4.0f;
+const float DISTANCE_TOLERANCE = 15.0f;
 
 
 //Math Helpers

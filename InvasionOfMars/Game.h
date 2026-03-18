@@ -8,6 +8,7 @@
 #include "Alien.h"
 #include "Hud.h"
 #include "Bullet.h"
+#include "Bonus.h"
 
 using namespace sf;
 using std::optional;
@@ -71,5 +72,6 @@ private:
 	bool isInPause = false;
 	Player player;
 
+	Bonus bonuses[NBR_BONUS_TYPE][NBR_OF_BONUS/NBR_BONUS_TYPE];
 	Alien aliens[DEFAULT_ALIEN_COUNT];
 };

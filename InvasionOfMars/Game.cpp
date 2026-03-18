@@ -51,11 +51,8 @@ bool Game::init()
 	player.setPosition(WORLD_CENTER_X, WORLD_CENTER_Y);
 
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-	{
 		aliens[i].init(rand() % 3);
-		//aliens[i].setPosition(WORLD_CENTER_X - 200 + i * 200, WORLD_CENTER_Y + 200);
-		//aliens[i].activate();
-	}
+
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 	{
@@ -63,11 +60,15 @@ bool Game::init()
 		bullets[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
 	}
 
+	for (int i = 0; i < NBR_BONUS_TYPE; i++)
+		for (int j = 0; j < NBR_OF_BONUS/NBR_BONUS_TYPE; j++)
+			bonuses[i][j].init(i);
+
 	hud.hudInit();
 
 	player.activate();
 	music.setLooping(true);
-	music.play();
+	//music.play();
 	return true;
 
 
@@ -97,13 +98,6 @@ void Game::getInputs()
 	}
 	else
 	{
-		//Notez que les diagonales ne sont pas gérées actuellement et que le déplacement
-		//est plus rapide en diagonale.  À vous de trouver une solution pour corriger ça.
-		//Vous avez le droit d'ajouter une méthode dans la struct inputs qui ferait cette 
-		//correction, un peu comme manageGamepadAxis.
-		//Notez que si moveHorizontal et moveVectical sont toutes deux pas à 0, alors on est
-		//en diagonal
-
 		if (Keyboard::isKeyPressed(Keyboard::Scan::A)) inputs.moveHorizontal -= 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::D)) inputs.moveHorizontal += 1.0f;
 		if (Keyboard::isKeyPressed(Keyboard::Scan::W)) inputs.moveVertical -= 1.0f;
@@ -189,7 +183,6 @@ void Game::manageGameConditions()
 			hud.displayPause(false);
 		}
 	}
-
 }
 
 void Game::checkPlayerAlienCollision() 
@@ -235,7 +228,32 @@ void Game::checkBulletAlienCollision()
 		{
 			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
 			{
-				
+				switch((rand() % BONUS_SPAWN_RATE) + 0)
+				{
+					case NUKE_NUMBER:
+						for (int i = 0; i < NBR_OF_BONUS/NBR_BONUS_TYPE; i++)
+						{
+							if (!bonuses[NUKE_NUMBER][i].isActive())
+							{
+								bonuses[NUKE_NUMBER][i].setPosition(aliens[i].getPosition());
+								bonuses[NUKE_NUMBER][i].activate();
+								recoil = MAX_RECOIL;
+								break;
+							}
+						}
+						break;
+					case FAST_NUMBER:
+						for (int i = 0; i < NBR_OF_BONUS / NBR_BONUS_TYPE; i++)
+						{
+							if (!bonuses[FAST_NUMBER][i].isActive())
+							{
+								bonuses[FAST_NUMBER][i].setPosition(aliens[i].getPosition());
+								bonuses[FAST_NUMBER][i].activate();
+								break;
+							}
+						}
+						break;
+				}
 				bullets[i].deactivate();
 				aliens[j].deactivate();
 				hud.incrementScore();
@@ -266,6 +284,10 @@ void Game::draw()
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
 	
+	for (int i = 0; i < NBR_BONUS_TYPE; i++)
+		for (int j = 0; j < NBR_OF_BONUS/NBR_BONUS_TYPE; j++)
+			bonuses[i][j].draw(renderWindow);
+
 	renderWindow.setView(hudView);
 	hud.draw(renderWindow);
 	renderWindow.setView(mainView);

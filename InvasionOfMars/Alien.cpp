@@ -66,7 +66,7 @@ void Alien::moveTowardDestination()
 
 	if (toward)
 	{
-		if (dist < 15.0f)
+		if (dist < DISTANCE_TOLERANCE)
 		{
 			return;
 		}

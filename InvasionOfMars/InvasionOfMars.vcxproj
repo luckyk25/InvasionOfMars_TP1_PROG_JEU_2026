@@ -169,6 +169,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Alien.cpp" />
+    <ClCompile Include="Bonus.cpp" />
+    <ClCompile Include="Bonus.h" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionCircle.cpp" />
     <ClCompile Include="ContentPipeline.cpp" />
