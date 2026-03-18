@@ -26,7 +26,7 @@ const int PLAYER_RESPAWN_TIME = 120;
 const int INVINCIBLE_TIMER = 180;
 
 //Alien
-const int DEFAULT_ALIEN_COUNT = 60;
+const int DEFAULT_ALIEN_COUNT = 160;
 const int ALIEN_SPAWN_SPEED = 60;
 const float ALIEN_MOVE_SPEED = 4.0f;
 
@@ -36,7 +36,8 @@ const float DIAGONAL_RATIO = 0.70710678f;
 const float PI = 3.14159265f;
 
 //Hud
-const std::string PAUSE_TEXTE = "Pause";
+const std::string PAUSE_TEXT = "Pause";
+const std::string GAME_OVER_TEXT = "Game Over";
 const int DEFAULT_SCORE_INCREMENT = 100;
 const int DEFAULT_LIVES_NUMBER = 5;
 

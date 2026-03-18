@@ -18,10 +18,10 @@ public:
 	void displayPause(const bool isPause);
 	bool isDead();
 private:
-	Text* bidon = nullptr;
 	Text* scoreText = nullptr;
 	Text* nbLivesText = nullptr;
 	Text* pauseText = nullptr;
+	Text* gameOverText = nullptr;
 	bool pauseState = false;
 	int nbLifes = DEFAULT_LIVES_NUMBER;
 	float scoreBonusTimer = BONUS_SCORE_TIMER;

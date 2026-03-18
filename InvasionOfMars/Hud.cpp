@@ -7,18 +7,15 @@ Hud::Hud()
 
 Hud::~Hud()
 {
-	if (bidon != nullptr) delete bidon;
 	if (scoreText != nullptr) delete scoreText;
 	if (nbLivesText != nullptr) delete nbLivesText;
 	if (pauseText != nullptr) delete pauseText;
+	if (gameOverText != nullptr) delete gameOverText;
 }
 
 void Hud::hudInit()
 {
 	score = 0;
-	bidon = new Text(ContentPipeline::getInstance().getFont(), "Aliens are invading Mars!!!", 50U);
-	bidon->setFillColor(Color::Red);
-	bidon->setPosition({ 350.0f, 20.0f });
 
 	scoreText = new Text(ContentPipeline::getInstance().getFont(), "Score: " + std::to_string(score), 30U);
 	scoreText->setFillColor(Color::White);
@@ -28,19 +25,27 @@ void Hud::hudInit()
 	nbLivesText->setFillColor(Color::White);
 	nbLivesText->setPosition({ 10.0f, 60.0f });
 
-	pauseText = new Text(ContentPipeline::getInstance().getFont(), PAUSE_TEXTE, 100u);
+	pauseText = new Text(ContentPipeline::getInstance().getFont(), PAUSE_TEXT, 100u);
 	pauseText->setFillColor(Color::White);
-	FloatRect textBounds = pauseText->getLocalBounds();
-		pauseText->setOrigin(textBounds.getCenter());
-	pauseText->setPosition({ SCREEN_WIDTH/2, SCREEN_HEIGHT / 2});
+	//https://www.sfml-dev.org/documentation/2.3/classsf_1_1Rect.php
+	pauseText->setOrigin(pauseText->getLocalBounds().getCenter());
+	pauseText->setPosition({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
+
+	gameOverText = new Text(ContentPipeline::getInstance().getFont(), GAME_OVER_TEXT, 100u);
+	gameOverText->setFillColor(Color::White);
+	gameOverText->setOrigin(gameOverText->getLocalBounds().getCenter());
+	gameOverText->setPosition({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
+
 }
 
 bool Hud::isDead() 
 {
-	if (nbLifes <= 0)
-		return 1;
+	if (nbLifes <= 0) 
+	{
+		return true;
+	}
 	else
-		return 0;
+		return false;
 }
 
 void Hud::incrementScore() 
@@ -85,4 +90,6 @@ void Hud::draw(RenderWindow& renderWindow)
 	renderWindow.draw(*nbLivesText);
 	if(pauseState)
 		renderWindow.draw(*pauseText);
+	if (isDead())
+		renderWindow.draw(*gameOverText);
 }

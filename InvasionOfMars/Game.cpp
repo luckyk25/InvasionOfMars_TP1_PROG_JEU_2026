@@ -76,7 +76,6 @@ bool Game::init()
 void Game::getInputs()
 {
 	inputs.reset();
-	if (gameOver) return;
 
 	//On passe l'événement en référence et celui-ci est chargé du dernier événement reçu!
 	while (const optional event = renderWindow.pollEvent())
@@ -88,6 +87,7 @@ void Game::getInputs()
 			if (keyPressed->scancode == Keyboard::Scan::P) inputs.pause = true;
 		}
 	}
+	if (gameOver) return;
 
 	if (Joystick::isConnected(0))
 	{
@@ -144,6 +144,7 @@ void Game::update()
 		managePlayerRespawn();
 	if (playerInvincible)
 	{
+		//Todo à mettre dans le player.
 		if (--playerInvincibleTimer <= 0) 
 		{
 			playerInvincible = false;
@@ -324,5 +325,4 @@ void Game::ajustCrossingWorldLimits()
 	else if (playerPosition.y > WORLD_LIMIT_MAX_Y) playerPosition.y = WORLD_LIMIT_MAX_Y;
 
 	mainView.setCenter(playerPosition);
-
 }
