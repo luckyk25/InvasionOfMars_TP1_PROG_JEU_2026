@@ -76,7 +76,6 @@ bool Game::init()
 void Game::getInputs()
 {
 	inputs.reset();
-
 	//On passe l'événement en référence et celui-ci est chargé du dernier événement reçu!
 	while (const optional event = renderWindow.pollEvent())
 	{
@@ -87,8 +86,8 @@ void Game::getInputs()
 			if (keyPressed->scancode == Keyboard::Scan::P) inputs.pause = true;
 		}
 	}
-	if (gameOver) return;
 
+	if (gameOver) return;
 	if (Joystick::isConnected(0))
 	{
 		//le / 100 à la fin: on ramène le tout à une échelle de 0 à 1: plus simple
@@ -120,7 +119,7 @@ void Game::getInputs()
 //Vous devrez centrer la vue sur le player: https://www.sfml-dev.org/tutorials/2.6/graphics-view-fr.php
 void Game::update()
 {
-	managePause();
+	manageGameConditions();
 	if (isInPause || gameOver) return;
 	if (hud.isPlayerDead()) gameOver = true;
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
@@ -172,16 +171,17 @@ void Game::manageAlienSpawn()
 	}
 }
 
-void Game::managePause()
+void Game::manageGameConditions()
 {
 	if (inputs.pause)
 	{
 		isInPause = !isInPause;
 
-		if (isInPause) 
+		if (isInPause || gameOver) 
 		{
 			music.pause();
-			hud.displayPause(true);
+			if(!gameOver)
+				hud.displayPause(true);
 		}
 		else 
 		{
@@ -189,6 +189,7 @@ void Game::managePause()
 			hud.displayPause(false);
 		}
 	}
+
 }
 
 void Game::checkPlayerAlienCollision() 
@@ -234,6 +235,7 @@ void Game::checkBulletAlienCollision()
 		{
 			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
 			{
+				
 				bullets[i].deactivate();
 				aliens[j].deactivate();
 				hud.incrementScore();

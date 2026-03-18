@@ -53,7 +53,7 @@ private:
 	void manageAlienSpawn();
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
-	void managePause();
+	void manageGameConditions();
 
 	RenderWindow renderWindow;
 	View mainView;

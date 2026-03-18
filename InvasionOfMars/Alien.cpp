@@ -31,7 +31,6 @@ void Alien::spawnAlien()
 {
 	int alienSizeX = getGlobalBounds().size.x;
 	int alienSizeY = getGlobalBounds().size.y;
-
 	float alienXPosition;
 	float alienYPosition;
 
