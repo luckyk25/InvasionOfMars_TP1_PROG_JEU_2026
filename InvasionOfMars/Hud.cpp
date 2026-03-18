@@ -38,7 +38,7 @@ void Hud::hudInit()
 
 }
 
-bool Hud::isDead() 
+bool Hud::isPlayerDead() 
 {
 	if (nbLifes <= 0) 
 	{
@@ -90,6 +90,6 @@ void Hud::draw(RenderWindow& renderWindow)
 	renderWindow.draw(*nbLivesText);
 	if(pauseState)
 		renderWindow.draw(*pauseText);
-	if (isDead())
+	if (isPlayerDead())
 		renderWindow.draw(*gameOverText);
 }

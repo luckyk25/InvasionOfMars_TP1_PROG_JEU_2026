@@ -45,3 +45,24 @@ Vector2f Player::getVectorialPush()
 {
 	return vectorialPush;
 }
+
+void Player::switchTransparence(const bool isTransparent)
+{
+	/*
+	fait à partir de l'exemple donné par Gemini AI
+		sf::Texture texture;
+		texture.loadFromFile("image.png");
+		sf::Sprite sprite(texture);
+		sprite.setColor(sf::Color(255, 255, 255, 128));
+
+	j'ai utilisé l'IA pour le trouver plus rapidement.
+	J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
+	*/
+	Color color = this->getColor();
+	if (isTransparent)
+		color.a = 80;
+	else
+		color.a = 255;
+
+	this->setColor(color);
+}

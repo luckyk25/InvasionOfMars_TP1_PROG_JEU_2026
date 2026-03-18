@@ -16,7 +16,7 @@ public:
 	void update();
 	void decreaseNumberOfLives();
 	void displayPause(const bool isPause);
-	bool isDead();
+	bool isPlayerDead();
 private:
 	Text* scoreText = nullptr;
 	Text* nbLivesText = nullptr;

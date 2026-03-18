@@ -39,7 +39,7 @@ const float PI = 3.14159265f;
 const std::string PAUSE_TEXT = "Pause";
 const std::string GAME_OVER_TEXT = "Game Over";
 const int DEFAULT_SCORE_INCREMENT = 100;
-const int DEFAULT_LIVES_NUMBER = 5;
+const int DEFAULT_LIVES_NUMBER = 2;
 
 const int BONUS_SCORE_INCREMENT_LIMIT = 500;
 const int BONUS_SCORE_INCREMENT = 10;

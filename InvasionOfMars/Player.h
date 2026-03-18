@@ -11,7 +11,7 @@ public:
 	void update();
 	void keepPlayerInBound();
 	Vector2f getVectorialPush();
-
+	void switchTransparence(const bool isTransparent);
 private:
 	Vector2f direction;
 	float leftBound;

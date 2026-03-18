@@ -122,7 +122,7 @@ void Game::update()
 {
 	managePause();
 	if (isInPause || gameOver) return;
-	if (hud.isDead()) gameOver = true;
+	if (hud.isPlayerDead()) gameOver = true;
 	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
@@ -148,13 +148,10 @@ void Game::update()
 		if (--playerInvincibleTimer <= 0) 
 		{
 			playerInvincible = false;
-			Color color = player.getColor();
-			color.a = 255;
-			player.setColor(color);
+			player.switchTransparence(playerInvincible);
 		}
 	}
 	checkPlayerAlienCollision();
-
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
 }
@@ -174,7 +171,6 @@ void Game::manageAlienSpawn()
 		alienSpawnTimer = ALIEN_SPAWN_SPEED;
 	}
 }
-
 
 void Game::managePause()
 {
@@ -223,19 +219,8 @@ void Game::managePlayerRespawn()
 		{
 			player.activate();
 			playerInvincibleTimer = INVINCIBLE_TIMER;
-			/*
-			Façon de faire trouvé grâche à Gemini Ai.
-			Je n'avais pas le temps de consulter la documentation sfml ou celle du prof pour trouver
-			comment rendre la texture transparente, alors j'ai utilisé l'ia pour le trouver plus rapidement.
-			J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
-			*/
-
-			Color color = player.getColor();
-			color.a = 80;
-			player.setColor(color);
-
 			playerInvincible = true;
-
+			player.switchTransparence(playerInvincible);
 			Alien::changeDirection();
 		}
 	}
@@ -274,9 +259,7 @@ void Game::draw()
 
 	player.draw(renderWindow);
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++) 
-	{
 		aliens[i].draw(renderWindow);
-	}
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
