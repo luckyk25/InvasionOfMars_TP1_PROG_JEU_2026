@@ -130,8 +130,11 @@ void Game::update()
 	if (blastRecoil > 0) blastRecoil--;
 
 	if(boostOn) 
-		if (--boostTimer <= 0)
+		if (--boostTimer <= 0) 
+		{
 			boostOn = false;
+			playerSpeedBoost -= playerSpeedBoost;
+		}
 
 	if (inputs.fire && player.isActive()) 
 	{
@@ -188,6 +191,7 @@ void Game::checkPlayerBonusCollision()
 				case BOOSTER:
 					boostOn = true;
 					boostTimer = BONUS_DURATION;
+					playerSpeedBoost = DEFAULT_SPEED_BOOST;
 					bonuses[i][j].deactivate();
 					break;
 				}
@@ -323,7 +327,7 @@ void Game::manageBonusSpawn(int j)
 
 void Game::managePlayerMovment() 
 {
-	player.move(inputs.moveHorizontal * PLAYER_SPEED, inputs.moveVertical * PLAYER_SPEED);
+	player.move(inputs.moveHorizontal * (PLAYER_SPEED + playerSpeedBoost), inputs.moveVertical * (PLAYER_SPEED + playerSpeedBoost));
 	player.setPlayerDirection(inputs.mousePosition);
 	player.keepPlayerInBound();
 }

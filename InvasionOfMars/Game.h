@@ -37,6 +37,7 @@ private:
 
 	float playerRespawnTimer = 0.0f;
 	float playerInvincibleTimer = 0.0f;
+	float playerSpeedBoost = 0.0f;
 	int alienSpawnTimer = ALIEN_SPAWN_SPEED;
 	
 	bool boostOn = false;

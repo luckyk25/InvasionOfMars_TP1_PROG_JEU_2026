@@ -14,12 +14,13 @@ const float PLAYER_LIMIT_MAX_Y = WORLD_HEIGHT;
 
 //Player
 static const float PLAYER_SPEED = 5.0f;
+static const float DEFAULT_SPEED_BOOST = 2.5f;
 static const float CAMERA_SPEED = PLAYER_SPEED;
 static const float ROTATION_SPEED = 50.0f;
 
 //Shooting
 const int MAX_RECOIL = 10;
-static const int MAX_BLAST_RECOIL = MAX_RECOIL - 2;
+static const int MAX_BLAST_RECOIL = MAX_RECOIL * 2;
 static const int NBR_BULLETS = 20;
 static const int NBR_BLASTS = 18;
 
