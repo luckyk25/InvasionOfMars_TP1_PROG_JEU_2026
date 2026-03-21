@@ -27,3 +27,4 @@ void Bonus::spawnBonus(Vector2f position)
 	this->setPosition(position);
 	this->activate();
 }
+

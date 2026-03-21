@@ -30,7 +30,7 @@ const int NBR_BONUS_TYPE = 2;
 
 //Boosters
 const int NUKE_NUMBER = 0;
-const int FAST_NUMBER = 1;
+const int BOOSTER = 1;
 const int BONUS_DURATION = 15;
 
 //Alien

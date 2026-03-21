@@ -13,6 +13,8 @@ public:
 	void spawnAlien();
 	void stop();
 	void run();
+
+
 private:
 
 	const Vector2i WORLD_SIZE;

@@ -241,17 +241,18 @@ void Game::checkBulletAlienCollision()
 							}
 						}
 						break;
-					case FAST_NUMBER:
+					case BOOSTER:
 						for (int i = 0; i < NBR_OF_BONUS; i++)
 						{
-							if (!bonuses[FAST_NUMBER][i].isActive())
+							if (!bonuses[BOOSTER][i].isActive())
 							{
-								bonuses[FAST_NUMBER][i].spawnBonus(aliens[j].getPosition());
+								bonuses[BOOSTER][i].spawnBonus(aliens[j].getPosition());
 								break;
 							}
 						}
 						break;
-				}
+				} 
+				
 				bullets[i].deactivate();
 				aliens[j].deactivate();
 				hud.incrementScore();
@@ -259,7 +260,6 @@ void Game::checkBulletAlienCollision()
 		}
 	}
 }
-
 
 void Game::managePlayerMovment() 
 {
