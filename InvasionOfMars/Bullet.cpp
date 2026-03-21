@@ -38,3 +38,13 @@ void Bullet::fly()
 
 	if (--lifeTime == 0) deactivate();
 }
+
+void Bullet::setIsBlast(bool blast) 
+{
+	this->isBlast = blast;
+}
+
+bool Bullet::getIsBlast()
+{
+	return this->isBlast;
+}

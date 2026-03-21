@@ -31,30 +31,40 @@ private:
 	const float WORLD_LIMIT_MAX_Y = WORLD_HEIGHT - WORLD_LIMIT_MIN_Y;
 
 	Bullet bullets[NBR_BULLETS];
+	Bullet blasts[NBR_BLASTS];
 	int recoil = 0;
+	int blastRecoil = 0;
 
 	float playerRespawnTimer = 0.0f;
 	float playerInvincibleTimer = 0.0f;
 	int alienSpawnTimer = ALIEN_SPAWN_SPEED;
 	
+	bool boostOn = false;
+	int boostTimer = 0;
+
 	bool playerInvincible = false;
 	bool gameOver = false;
 	bool init();
 	void getInputs();
 	void update();
 	void draw();
+
 	void fire();
+	void fireBlast();
 	bool unload();
 
 	void calculateDeltaTime();
-
-	void ajustCrossingWorldLimits();
+	
 	void managePlayerMovment();
 	void managePlayerRespawn();
 	void manageAlienSpawn();
+	void manageGameConditions();
+	void manageBonusSpawn(int j);
+
+	void ajustCrossingWorldLimits();
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
-	void manageGameConditions();
+	void checkPlayerBonusCollision();
 
 	RenderWindow renderWindow;
 	View mainView;

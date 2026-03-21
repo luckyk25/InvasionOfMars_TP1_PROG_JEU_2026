@@ -19,7 +19,9 @@ static const float ROTATION_SPEED = 50.0f;
 
 //Shooting
 const int MAX_RECOIL = 10;
+static const int MAX_BLAST_RECOIL = MAX_RECOIL - 2;
 static const int NBR_BULLETS = 20;
+static const int NBR_BLASTS = 18;
 
 //Game
 const int PLAYER_RESPAWN_TIME = 120;
@@ -29,9 +31,9 @@ const int NBR_OF_BONUS = 6;
 const int NBR_BONUS_TYPE = 2;
 
 //Boosters
-const int NUKE_NUMBER = 0;
-const int BOOSTER = 1;
-const int BONUS_DURATION = 15;
+const int NUKE_NUMBER = 1;
+const int BOOSTER = 0;
+const int BONUS_DURATION = 900;// 60 * 15
 
 //Alien
 const int ALIEN_SPAWN_SPEED = 60;

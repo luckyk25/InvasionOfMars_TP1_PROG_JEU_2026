@@ -13,18 +13,9 @@ void Bonus::init(const int textureNumber)
 	durationTimer = EXTRA_SCORE_TIMER;
 }
 
-void Bonus::update() 
-{
-	if (--durationTimer <= 0) 
-	{
-		isRunning = true;
-		durationTimer = EXTRA_SCORE_TIMER;
-	}
-}
 
 void Bonus::spawnBonus(Vector2f position) 
 {
 	this->setPosition(position);
 	this->activate();
 }
-

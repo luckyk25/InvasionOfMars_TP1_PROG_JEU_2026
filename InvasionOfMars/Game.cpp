@@ -60,6 +60,13 @@ bool Game::init()
 		bullets[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
 	}
 
+	for(int i = 0; i < NBR_BLASTS; i++) 
+	{
+		blasts[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(0));
+		blasts[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
+		blasts[i].setIsBlast(true);
+	}
+
 	for (int i = 0; i < NBR_BONUS_TYPE; i++)
 		for (int j = 0; j < NBR_OF_BONUS; j++)
 			bonuses[i][j].init(i);
@@ -120,10 +127,26 @@ void Game::update()
 	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
 	//vous devrez centrer la vue sur lui.
 	if (recoil > 0) recoil--;
-	if (inputs.fire && player.isActive()) fire();
+	if (blastRecoil > 0) blastRecoil--;
+
+	if(boostOn) 
+		if (--boostTimer <= 0)
+			boostOn = false;
+
+	if (inputs.fire && player.isActive()) 
+	{
+		if (boostOn)
+			fireBlast();
+		else
+			fire();
+	
+	}
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].fly();
+
+	for (int i = 0; i < NBR_BLASTS; i++)
+		blasts[i].fly();
 	
 	Alien::setDestination(player.getPosition());
 	
@@ -145,8 +168,29 @@ void Game::update()
 		}
 	}
 	checkPlayerAlienCollision();
+	checkPlayerBonusCollision();
 	managePlayerMovment();
 	ajustCrossingWorldLimits();
+}
+
+
+void Game::checkPlayerBonusCollision() 
+{
+	if (!player.isActive()) return;
+	for (int i = 0; i < NBR_BONUS_TYPE; i++)
+		for (int j = 0; j < NBR_OF_BONUS; j++)
+			if (player.isCircleColliding(bonuses[i][j]))
+				switch (i)
+				{
+				case NUKE_NUMBER:
+					bonuses[i][j].deactivate();
+					break;
+				case BOOSTER:
+					boostOn = true;
+					boostTimer = BONUS_DURATION;
+					bonuses[i][j].deactivate();
+					break;
+				}
 }
 
 void Game::manageAlienSpawn() 
@@ -228,36 +272,52 @@ void Game::checkBulletAlienCollision()
 		{
 			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
 			{
-				int randomNumber = (rand() % BONUS_SPAWN_RATE) + 0;
-				switch(randomNumber)
-				{
-					case NUKE_NUMBER:
-						for (int i = 0; i < NBR_OF_BONUS; i++)
-						{
-							if (!bonuses[NUKE_NUMBER][i].isActive())
-							{
-								bonuses[NUKE_NUMBER][i].spawnBonus(aliens[j].getPosition());
-								break;
-							}
-						}
-						break;
-					case BOOSTER:
-						for (int i = 0; i < NBR_OF_BONUS; i++)
-						{
-							if (!bonuses[BOOSTER][i].isActive())
-							{
-								bonuses[BOOSTER][i].spawnBonus(aliens[j].getPosition());
-								break;
-							}
-						}
-						break;
-				} 
-				
+				manageBonusSpawn(j);
 				bullets[i].deactivate();
 				aliens[j].deactivate();
 				hud.incrementScore();
 			}
 		}
+	}
+	for (int i = 0; i < NBR_BLASTS; i++)
+	{
+		for (int j = 0; j < DEFAULT_ALIEN_COUNT; j++)
+		{
+			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]))
+			{
+				manageBonusSpawn(j);
+				aliens[j].deactivate();
+				hud.incrementScore();
+			}
+		}
+	}
+}
+
+void Game::manageBonusSpawn(int j)
+{
+	int randomNumber = (rand() % BONUS_SPAWN_RATE) + 0;
+	switch (randomNumber)
+	{
+		case NUKE_NUMBER:
+			for (int i = 0; i < NBR_OF_BONUS; i++)
+			{
+				if (!bonuses[NUKE_NUMBER][i].isActive())
+				{
+					bonuses[NUKE_NUMBER][i].spawnBonus(aliens[j].getPosition());
+					break;
+				}
+			}
+			break;
+		case BOOSTER:
+			for (int i = 0; i < NBR_OF_BONUS; i++)
+			{
+				if (!bonuses[BOOSTER][i].isActive())
+				{
+					bonuses[BOOSTER][i].spawnBonus(aliens[j].getPosition());
+					break;
+				}
+			}
+			break;
 	}
 }
 
@@ -281,6 +341,9 @@ void Game::draw()
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 		bullets[i].draw(renderWindow);
+
+	for (int i = 0; i < NBR_BLASTS; i++)
+		blasts[i].draw(renderWindow);
 	
 	for (int i = 0; i < NBR_BONUS_TYPE; i++)
 		for (int j = 0; j < NBR_OF_BONUS; j++)
@@ -314,6 +377,21 @@ void Game::fire()
 		{
 			bullets[i].fire(player, player.getVectorialPush());
 			recoil = MAX_RECOIL;
+			break;
+		}
+	}
+}
+
+void Game::fireBlast()
+{
+	if (blastRecoil > 0) return;
+
+	for (int i = 0; i < NBR_BLASTS; i++)
+	{
+		if (!blasts[i].isActive())
+		{
+			blasts[i].fire(player, player.getVectorialPush());
+			blastRecoil = MAX_BLAST_RECOIL;
 			break;
 		}
 	}
