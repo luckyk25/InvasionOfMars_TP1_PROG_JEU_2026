@@ -90,7 +90,8 @@ bool Game::init()
 
 bool Game::setRandomMusic() 
 {
-	switch ((rand() % MUSIC_COUNT))
+	int randomNumber = (rand() % MUSIC_COUNT) + 0;
+	switch (randomNumber)
 	{
 		case(0): 
 			if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Carpenter_brut_remorse.ogg"))) return false;
