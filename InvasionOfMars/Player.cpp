@@ -6,9 +6,15 @@ Player::Player()
 
 }
 
+Player::~Player() 
+{
+	if(deathSound != nullptr) delete deathSound;
+}
+
 void Player::init()
 {
 	setTexture(ContentPipeline::getInstance().getPlayerTexture());
+	deathSound = new Sound(ContentPipeline::getInstance().getPlayerDeathBuffer());
 	leftBound = getTexture().getSize().x / 2.f;
 	rightBound = WORLD_WIDTH - getTexture().getSize().x / 2.f;
 	upBound = getTexture().getSize().y / 2.f;
@@ -74,4 +80,9 @@ void Player::switchYellow(const bool isYellow)
 		this->setColor(sf::Color(255, 255, 0));
 	else
 		this->setColor(sf::Color::White);
+}
+
+void Player::playDeathSound()
+{
+	deathSound->play();
 }

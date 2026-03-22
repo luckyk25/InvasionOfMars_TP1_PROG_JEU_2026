@@ -30,6 +30,9 @@ const int INVINCIBLE_TIMER = 180;
 const int BONUS_SPAWN_RATE = 24;
 const int NBR_OF_BONUS = 6;
 const int NBR_BONUS_TYPE = 2;
+const int MUSIC_COUNT = 2;
+const int BULLET = 1;
+const int BLAST = 0;
 
 //Boosters
 const int NUKE_NUMBER = 1;

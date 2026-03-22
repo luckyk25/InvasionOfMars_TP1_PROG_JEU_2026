@@ -30,15 +30,16 @@ void Alien::update()
 
 void Alien::spawnAlien()
 {
-	int alienSizeX = getGlobalBounds().size.x;
-	int alienSizeY = getGlobalBounds().size.y;
+	float alienSizeX = getGlobalBounds().size.x;
+	float alienSizeY = getGlobalBounds().size.y;
 	float alienXPosition;
 	float alienYPosition;
 
 	do
 	{
-		alienXPosition = (rand() % (WORLD_SIZE.x - alienSizeX)) + alienSizeX / 2;
-		alienYPosition = (rand() % (WORLD_SIZE.y - alienSizeY)) + alienSizeY / 2;
+		//https://www.geeksforgeeks.org/cpp/static_cast-in-cpp/
+		alienXPosition = (rand() % static_cast<int>(WORLD_SIZE.x - alienSizeX)) + alienSizeX / 2.f;
+		alienYPosition = (rand() % static_cast<int>(WORLD_SIZE.y - alienSizeY)) + alienSizeY / 2.f;
 	} 
 	while (sqrt((alienXPosition - destination.x) *
 				(alienXPosition - destination.x) +

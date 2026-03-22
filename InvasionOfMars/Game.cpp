@@ -20,6 +20,11 @@ Game::Game()
 	srand((int)time(0));  //Pour générer le seed random
 }
 
+Game::~Game() 
+{
+	if (hordeSound != nullptr) delete hordeSound;
+}
+
 int Game::run()
 {
 	if (!init())return EXIT_FAILURE;
@@ -40,8 +45,9 @@ int Game::run()
 bool Game::init()
 {
 	if (!ContentPipeline::getInstance().loadContent()) return false;
-	if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Carpenter_brut_remorse.ogg"))) return false;
-
+	if (!setRandomMusic()) return false;
+	//if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Carpenter_brut_remorse.ogg"))) return false;
+	hordeSound = new Sound(ContentPipeline::getInstance().getHordeBuffer());
 	field = new Sprite(ContentPipeline::getInstance().getBackgroundTexture());
 	field->setPosition({ 0.0f, 0.0f });
 	field->setColor(Color(193, 68, 14, 255)); //Couleur "Rouge sol de Mars"
@@ -56,13 +62,13 @@ bool Game::init()
 
 	for (int i = 0; i < NBR_BULLETS; i++)
 	{
-		bullets[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(1));
+		bullets[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(BULLET));
 		bullets[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
 	}
 
 	for(int i = 0; i < NBR_BLASTS; i++) 
 	{
-		blasts[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(0));
+		blasts[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(BLAST));
 		blasts[i].setBulletSound(ContentPipeline::getInstance().getBoostedShotBuffer());
 		blasts[i].setIsBlast(true);
 	}
@@ -75,10 +81,28 @@ bool Game::init()
 
 	player.activate();
 	music.setLooping(true);
-	//music.play();
+	music.play();
+	hordeSound->play();
 	return true;
 
 
+}
+
+bool Game::setRandomMusic() 
+{
+	switch ((rand() % MUSIC_COUNT))
+	{
+		case(0): 
+			if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Carpenter_brut_remorse.ogg"))) return false;
+		break;
+		case(1):
+			if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Deadmau5_welk_then.ogg"))) return false;
+		break;
+		case(2):
+			if (!music.openFromFile(std::filesystem::path("Ressources\\Sounds\\Music\\Mega_drive_narc.ogg"))) return false;
+		break;
+	}
+	return true;
 }
 
 void Game::getInputs()
@@ -184,11 +208,13 @@ void Game::checkPlayerBonusCollision()
 					case NUKE_NUMBER:
 						killAliensInRange();
 						bonuses[i][j].deactivate();
+						bonuses[i][j].playExplosionSound();
 						break;
 					case BOOSTER:
 						boostOn = true;
 						boostTimer += BONUS_DURATION;
 						playerSpeedBoost = DEFAULT_SPEED_BOOST;
+						bonuses[i][j].playToggleSound();
 						player.switchYellow(true);
 						bonuses[i][j].deactivate();
 						break;
@@ -242,12 +268,13 @@ void Game::checkPlayerAlienCollision()
 			{				
 				Alien::changeDirection();
 				player.deactivate();
+				player.playDeathSound();
 				hud.decreaseNumberOfLives();
 				playerRespawnTimer = PLAYER_RESPAWN_TIME;
 				if(boostOn) 
 				{
 					boostTimer = 0;
-					aliens[i].deactivate();
+					alienDead(i);
 				}
 				break;
 			}
@@ -263,6 +290,7 @@ void Game::managePlayerRespawn()
 		if (playerRespawnTimer <= 0)
 		{
 			player.activate();
+			hordeSound->play();
 			playerInvincibleTimer = INVINCIBLE_TIMER;
 			playerInvincible = true;
 			player.switchTransparence(playerInvincible);

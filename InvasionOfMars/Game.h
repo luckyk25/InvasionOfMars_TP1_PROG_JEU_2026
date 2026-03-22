@@ -17,6 +17,7 @@ class Game
 {
 public:
 	Game();
+	~Game();
 	int run();
 
 private:
@@ -49,6 +50,7 @@ private:
 	void getInputs();
 	void update();
 	void draw();
+	bool setRandomMusic();
 
 	void fire();
 	void fireBlast();
@@ -81,6 +83,7 @@ private:
 
 	Hud hud;
 	Music music;
+	Sound* hordeSound = nullptr;
 
 	Sprite* field = nullptr;
 	bool isInPause = false;
