@@ -185,16 +185,17 @@ void Game::checkPlayerBonusCollision()
 			if (player.isCircleColliding(bonuses[i][j]))
 				switch (i)
 				{
-				case NUKE_NUMBER:
-					bonuses[i][j].deactivate();
-					break;
-				case BOOSTER:
-					boostOn = true;
-					boostTimer += BONUS_DURATION;
-					playerSpeedBoost = DEFAULT_SPEED_BOOST;
-					player.switchYellow(true);
-					bonuses[i][j].deactivate();
-					break;
+					case NUKE_NUMBER:
+						killAliensInRange();
+						bonuses[i][j].deactivate();
+						break;
+					case BOOSTER:
+						boostOn = true;
+						boostTimer += BONUS_DURATION;
+						playerSpeedBoost = DEFAULT_SPEED_BOOST;
+						player.switchYellow(true);
+						bonuses[i][j].deactivate();
+						break;
 				}
 }
 
@@ -378,7 +379,6 @@ void Game::calculateDeltaTime()
 
 void Game::fire()
 {
-	//Recoil doit être à 0 pour avoir le droit de tirer concrètement
 	if (recoil > 0) return;
 
 	for (int i = 0; i < NBR_BULLETS; i++)
@@ -403,6 +403,20 @@ void Game::fireBlast()
 			blasts[i].fire(player, player.getVectorialPush());
 			blastRecoil = MAX_BLAST_RECOIL;
 			break;
+		}
+	}
+}
+
+void Game::killAliensInRange() 
+{
+	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
+	{
+		sf::Vector2f position = aliens[i].getPosition();
+
+		if (position.x >= WORLD_LIMIT_MIN_X && position.y >= WORLD_LIMIT_MIN_Y && position.x <= WORLD_LIMIT_MAX_X && position.y <= WORLD_LIMIT_MAX_Y)
+		{
+			aliens[i].deactivate();
+			hud.incrementScore();
 		}
 	}
 }

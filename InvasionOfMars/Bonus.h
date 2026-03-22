@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Alien.h"
 
 class Bonus : public GameObject
 {

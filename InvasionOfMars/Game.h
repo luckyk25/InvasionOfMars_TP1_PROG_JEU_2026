@@ -67,6 +67,8 @@ private:
 	void checkPlayerAlienCollision();
 	void checkPlayerBonusCollision();
 
+	void killAliensInRange();
+
 	RenderWindow renderWindow;
 	View mainView;
 	View hudView;
