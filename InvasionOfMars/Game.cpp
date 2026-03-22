@@ -134,6 +134,7 @@ void Game::update()
 		{
 			boostOn = false;
 			playerSpeedBoost -= playerSpeedBoost;
+			player.switchYellow(false);
 		}
 
 	if (inputs.fire && player.isActive()) 
@@ -142,7 +143,6 @@ void Game::update()
 			fireBlast();
 		else
 			fire();
-	
 	}
 
 	for (int i = 0; i < NBR_BULLETS; i++)
@@ -190,8 +190,9 @@ void Game::checkPlayerBonusCollision()
 					break;
 				case BOOSTER:
 					boostOn = true;
-					boostTimer = BONUS_DURATION;
+					boostTimer += BONUS_DURATION;
 					playerSpeedBoost = DEFAULT_SPEED_BOOST;
+					player.switchYellow(true);
 					bonuses[i][j].deactivate();
 					break;
 				}
@@ -246,6 +247,11 @@ void Game::checkPlayerAlienCollision()
 				player.deactivate();
 				hud.decreaseNumberOfLives();
 				playerRespawnTimer = PLAYER_RESPAWN_TIME;
+				if(boostOn) 
+				{
+					boostTimer = 0;
+					aliens[i].deactivate();
+				}
 				break;
 			}
 		}

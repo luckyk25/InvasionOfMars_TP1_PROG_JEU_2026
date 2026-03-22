@@ -20,8 +20,8 @@ public:
 	int run();
 
 private:
-	const int WORLD_CENTER_X = WORLD_WIDTH / 2;
-	const int WORLD_CENTER_Y = WORLD_HEIGHT / 2;
+	const float WORLD_CENTER_X = WORLD_WIDTH / 2;
+	const float WORLD_CENTER_Y = WORLD_HEIGHT / 2;
 
 	//Puisque la utilise des positions centrales, les limites d'affichage
 	//sont les positions centrales des cadres limites.

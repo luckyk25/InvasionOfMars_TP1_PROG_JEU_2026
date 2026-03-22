@@ -66,3 +66,12 @@ void Player::switchTransparence(const bool isTransparent)
 
 	this->setColor(color);
 }
+
+void Player::switchYellow(const bool isYellow) 
+{
+	if (isYellow)
+		// TODO si le temps mettre en const
+		this->setColor(sf::Color(255, 255, 0));
+	else
+		this->setColor(sf::Color::White);
+}

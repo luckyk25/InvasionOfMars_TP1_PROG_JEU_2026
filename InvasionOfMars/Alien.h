@@ -18,7 +18,7 @@ public:
 private:
 
 	const Vector2i WORLD_SIZE;
-	const float MIN_DISTANCE = 100.f;
+	const float MIN_DISTANCE = 120.f;
 
 	static Vector2f destination;
 	static bool toward;

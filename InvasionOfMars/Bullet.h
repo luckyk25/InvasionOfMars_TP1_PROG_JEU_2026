@@ -12,7 +12,7 @@ class Bullet : public GameObject
 		void fly();
 		void setIsBlast(bool blast);
 		bool getIsBlast();
-	private: 
+	private:
 		static const int MAX_LIFETIME = 180;
 		static const float BULLET_SPEED;
 		

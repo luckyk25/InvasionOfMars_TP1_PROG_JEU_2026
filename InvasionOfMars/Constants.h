@@ -34,7 +34,7 @@ const int NBR_BONUS_TYPE = 2;
 //Boosters
 const int NUKE_NUMBER = 1;
 const int BOOSTER = 0;
-const int BONUS_DURATION = 900;// 60 * 15
+const int BONUS_DURATION = 300;// 60 * 5
 
 //Alien
 const int ALIEN_SPAWN_SPEED = 60;
@@ -50,7 +50,7 @@ const float PI = 3.14159265f;
 const std::string PAUSE_TEXT = "Pause";
 const std::string GAME_OVER_TEXT = "Game Over";
 const int DEFAULT_SCORE_INCREMENT = 100;
-const int DEFAULT_LIVES_NUMBER = 2;
+const int DEFAULT_LIVES_NUMBER = 5;
 
 const int EXTRA_SCORE_INCREMENT_LIMIT = 500;
 const int EXTRA_SCORE_INCREMENT = 10;
