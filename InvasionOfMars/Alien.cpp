@@ -10,11 +10,14 @@ Alien::Alien() : WORLD_SIZE(WORLD_WIDTH, WORLD_HEIGHT)
 Alien::~Alien()
 {
 	if (alienDeathSound != nullptr) delete alienDeathSound;
+	if (scoreText != nullptr) delete scoreText;
 }
 
 void Alien::init(const int alienTextureNumber, const SoundBuffer& soundBuffer)
 {
 	this->setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
+	scoreText = new Text(ContentPipeline::getInstance().getFont(), "", 20u);
+	scoreText->setFillColor(Color::White);
 	alienDeathSound = new Sound(soundBuffer);
 	toward = true;
 	isMoving = true;
@@ -25,7 +28,8 @@ void Alien::update()
 {
 	if (!isActive() || !isMoving) return;
 	moveTowardDestination();
-
+	if (scoreText > 0)
+		scoreTextTimer--;
 }
 
 void Alien::spawnAlien()
@@ -60,6 +64,15 @@ void Alien::setDestination(const Vector2f& _destination)
 	destination = _destination;
 }
 
+void Alien::draw(RenderWindow& renderWindow)
+{
+	if (isActive())
+		renderWindow.draw(*this);
+
+	if (scoreTextTimer > 0)
+		renderWindow.draw(*scoreText);
+}
+
 void Alien::moveTowardDestination() 
 {
 	float dx = destination.x - getPosition().x;
@@ -92,4 +105,19 @@ void Alien::stop()
 void Alien::playDeathSound()
 {
 	alienDeathSound->play();
+}
+
+void Alien::displayAlienDeathScore(const int score) 
+{
+	scoreTextTimer = DEFAULT_SCORE_DISPLAY_TIMER;
+	scoreText->setString(std::to_string(score));
+	scoreText->setOrigin(scoreText->getLocalBounds().getCenter());
+	scoreText->setPosition(getPosition());
+}
+
+void Alien::alienDead(const int deathScore) 
+{
+	this->deactivate();
+	playDeathSound();
+	displayAlienDeathScore(deathScore);
 }

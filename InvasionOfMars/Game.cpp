@@ -308,7 +308,6 @@ void Game::checkBulletAlienCollision()
 		{
 			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
 			{
-				manageBonusSpawn(j);
 				bullets[i].deactivate();
 				alienDead(j);
 			}
@@ -320,7 +319,6 @@ void Game::checkBulletAlienCollision()
 		{
 			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]))
 			{
-				manageBonusSpawn(j);
 				alienDead(j);
 			}
 		}
@@ -449,9 +447,10 @@ void Game::killAliensInRange()
 
 void Game::alienDead(int index)
 {
-	aliens[index].deactivate();
-	aliens[index].playDeathSound();
+	manageBonusSpawn(index);
 	hud.incrementScore();
+	aliens[index].alienDead(hud.getCurrentKillScore());
+
 }
 
 void Game::ajustCrossingWorldLimits()

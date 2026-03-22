@@ -13,15 +13,16 @@ public:
 	void spawnAlien();
 	void stop();
 	void run();
-	void playDeathSound();
-
-
+	void alienDead(const int deathScore);
+	void draw(RenderWindow& renderWindow);
 private:
 
 	const Vector2i WORLD_SIZE;
-	const float MIN_DISTANCE = 120.f;
+	const float MIN_DISTANCE = 120.0f;
 
 	Sound* alienDeathSound = nullptr;
+	Text* scoreText = nullptr;
+	float scoreTextTimer = 0.0f;
 
 	static Vector2f destination;
 	static bool toward;
@@ -30,6 +31,8 @@ private:
 	bool isMoving = false;
 	Angle rotationAngle;
 
+	void playDeathSound();
+	void displayAlienDeathScore(const int deathScore);
 	void moveTowardDestination();
 };
 

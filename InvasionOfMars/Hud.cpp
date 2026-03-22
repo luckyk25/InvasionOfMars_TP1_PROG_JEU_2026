@@ -28,6 +28,7 @@ void Hud::hudInit()
 	pauseText = new Text(ContentPipeline::getInstance().getFont(), PAUSE_TEXT, 100u);
 	pauseText->setFillColor(Color::White);
 	//https://www.sfml-dev.org/documentation/2.3/classsf_1_1Rect.php
+	// cette manière permet de mettre l'origine sur le vrai centre du texte.
 	pauseText->setOrigin(pauseText->getLocalBounds().getCenter());
 	pauseText->setPosition({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
 
@@ -48,15 +49,22 @@ bool Hud::isPlayerDead()
 		return false;
 }
 
+void Hud::setCurrentKillScore(int currentScore)
+{
+	this->currentKillScore = currentScore;
+}
+
 void Hud::incrementScore() 
 {
 	int currentKillIncrement = DEFAULT_SCORE_INCREMENT;
 	if(scoreBonusTimer > 0)
 	{
-		currentKillIncrement += EXTRA_SCORE_INCREMENT;
+		currentKillIncrement = currentKillScore + EXTRA_SCORE_INCREMENT;
 		if (currentKillIncrement > EXTRA_SCORE_INCREMENT_LIMIT)
 			currentKillIncrement = EXTRA_SCORE_INCREMENT_LIMIT;
 	}
+	//permet de garder la valeur du kill actuel.
+	setCurrentKillScore(currentKillIncrement);
 	score += currentKillIncrement;
 
 	scoreBonusTimer = EXTRA_SCORE_TIMER;
@@ -68,6 +76,7 @@ void Hud::incrementScore()
 void Hud::update() 
 {
 	scoreBonusTimer--;
+	
 	nbLivesText->setString("Vies: X" + std::to_string(nbLifes));
 }
 
@@ -92,4 +101,9 @@ void Hud::draw(RenderWindow& renderWindow)
 		renderWindow.draw(*pauseText);
 	if (isPlayerDead())
 		renderWindow.draw(*gameOverText);
+}
+
+int Hud::getCurrentKillScore()
+{
+	return currentKillScore;
 }
