@@ -9,12 +9,13 @@ Alien::Alien() : WORLD_SIZE(WORLD_WIDTH, WORLD_HEIGHT)
 
 Alien::~Alien()
 {
-
+	if (alienDeathSound != nullptr) delete alienDeathSound;
 }
 
-void Alien::init(const int alienTextureNumber)
+void Alien::init(const int alienTextureNumber, const SoundBuffer& soundBuffer)
 {
-	setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
+	this->setTexture(ContentPipeline::getInstance().getAlienTexture(alienTextureNumber));
+	alienDeathSound = new Sound(soundBuffer);
 	toward = true;
 	isMoving = true;
 	spawnTimer = ALIEN_SPAWN_SPEED;
@@ -85,4 +86,9 @@ void Alien::run()
 void Alien::stop()
 {
 	isMoving = false;
+}
+
+void Alien::playDeathSound()
+{
+	alienDeathSound->play();
 }

@@ -14,6 +14,7 @@ Bullet::~Bullet()
 void Bullet::setBulletSound(const SoundBuffer& soundBuffer)
 {
 	bulletSound = new Sound(soundBuffer);
+	
 }
 
 void Bullet::fire(const GameObject& origin, const Vector2f& vectorialPush)
@@ -26,6 +27,7 @@ void Bullet::fire(const GameObject& origin, const Vector2f& vectorialPush)
 	lifeTime = MAX_LIFETIME;
 
 	bulletSound->play();
+	
 	activate();
 }
 

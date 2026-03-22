@@ -51,7 +51,7 @@ bool Game::init()
 	player.setPosition(WORLD_CENTER_X, WORLD_CENTER_Y);
 
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
-		aliens[i].init(rand() % 3);
+		aliens[i].init(rand() % 3, ContentPipeline::getInstance().getAlienDeathBuffer());
 
 
 	for (int i = 0; i < NBR_BULLETS; i++)
@@ -63,7 +63,7 @@ bool Game::init()
 	for(int i = 0; i < NBR_BLASTS; i++) 
 	{
 		blasts[i].setTexture(ContentPipeline::getInstance().getProjectileTexture(0));
-		blasts[i].setBulletSound(ContentPipeline::getInstance().getShotBuffer());
+		blasts[i].setBulletSound(ContentPipeline::getInstance().getBoostedShotBuffer());
 		blasts[i].setIsBlast(true);
 	}
 
@@ -87,7 +87,6 @@ void Game::getInputs()
 	//On passe l'événement en référence et celui-ci est chargé du dernier événement reçu!
 	while (const optional event = renderWindow.pollEvent())
 	{
-		//x sur la fenêtre
 		if (event->is<Event::Closed>())	renderWindow.close();
 		if (const Event::KeyPressed* keyPressed = event->getIf<Event::KeyPressed>())
 		{
@@ -117,15 +116,12 @@ void Game::getInputs()
 	}
 }
 
-//Vous devrez centrer la vue sur le player: https://www.sfml-dev.org/tutorials/2.6/graphics-view-fr.php
 void Game::update()
 {
 	manageGameConditions();
 	if (isInPause || gameOver) return;
 	if (hud.isPlayerDead()) gameOver = true;
-	//On peut déplacer la vue, mais on peut aussi lui la centrer sur une position précise, 
-	//comme celle du joueur (avec la méthode setCenter).  Quand votre joueur va se déplacer 
-	//vous devrez centrer la vue sur lui.
+
 	if (recoil > 0) recoil--;
 	if (blastRecoil > 0) blastRecoil--;
 
@@ -285,8 +281,7 @@ void Game::checkBulletAlienCollision()
 			{
 				manageBonusSpawn(j);
 				bullets[i].deactivate();
-				aliens[j].deactivate();
-				hud.incrementScore();
+				alienDead(j);
 			}
 		}
 	}
@@ -297,8 +292,7 @@ void Game::checkBulletAlienCollision()
 			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]))
 			{
 				manageBonusSpawn(j);
-				aliens[j].deactivate();
-				hud.incrementScore();
+				alienDead(j);
 			}
 		}
 	}
@@ -306,6 +300,10 @@ void Game::checkBulletAlienCollision()
 
 void Game::manageBonusSpawn(int j)
 {
+	//Genere un nombre aléatoie de 0 a 24. Si le nombre est de 0. 
+	//La méthode spawn un booster. Si c'est 1 elle spawn un Nuke Number.
+	//Si un autre nombre. Rien spawn.
+	//J provient d'une autre boucle pour le nombre d'alien.
 	int randomNumber = (rand() % BONUS_SPAWN_RATE) + 0;
 	switch (randomNumber)
 	{
@@ -415,10 +413,16 @@ void Game::killAliensInRange()
 
 		if (position.x >= WORLD_LIMIT_MIN_X && position.y >= WORLD_LIMIT_MIN_Y && position.x <= WORLD_LIMIT_MAX_X && position.y <= WORLD_LIMIT_MAX_Y)
 		{
-			aliens[i].deactivate();
-			hud.incrementScore();
+			alienDead(i);
 		}
 	}
+}
+
+void Game::alienDead(int index)
+{
+	aliens[index].deactivate();
+	aliens[index].playDeathSound();
+	hud.incrementScore();
 }
 
 void Game::ajustCrossingWorldLimits()

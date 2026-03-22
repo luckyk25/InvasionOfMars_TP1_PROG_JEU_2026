@@ -68,6 +68,7 @@ private:
 	void checkPlayerBonusCollision();
 
 	void killAliensInRange();
+	void alienDead(int index);
 
 	RenderWindow renderWindow;
 	View mainView;
