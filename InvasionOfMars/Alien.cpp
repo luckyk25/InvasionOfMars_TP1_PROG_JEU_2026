@@ -24,12 +24,42 @@ void Alien::init(const int alienTextureNumber, const SoundBuffer& soundBuffer)
 	spawnTimer = ALIEN_SPAWN_SPEED;
 }
 
+void Alien::calculateMoveAngle() 
+{
+	float dx = destination.x - getPosition().x;
+	float dy = destination.y - getPosition().y;
+	moveAngle = atan2f(dy, dx);
+	if (!toward) moveAngle += PI;
+}
+
 void Alien::update()
 {
-	if (!isActive() || !isMoving) return;
-	moveTowardDestination();
 	if (scoreText > 0)
 		scoreTextTimer--;
+
+	if(isSpawning) 
+	{
+		spawnTimer --;
+		//Quand le timer est à 0. Le progress est a 100% (à 1). donc l'alein se rend à son scale de 1.
+		float progress = 1.f - (spawnTimer / ALIEN_SPAWN_SPEED);
+		setScale({ progress, progress });
+		calculateMoveAngle();
+		// J<ai utilisé gemini ai pour comprendre comment faire cette formule. 
+		// le offset rend l'alien en petit peu tourné par rapport au "vrai" angle
+		// pour se rendre vers le joueur.
+		// quand le progress est a 0% il rajoute 360 degress.
+		float rotationOffsetDegrees = (1.f - progress) * 360.f;
+		setRotation(sf::degrees(sf::radians(moveAngle).asDegrees() + rotationOffsetDegrees));
+		//Après 1 seconde. Le scale est normal. l'alien n'est plus invincible.
+		if (spawnTimer <= 0)
+		{
+			isSpawning = false;
+			setScale({ 1.f, 1.f });
+		}
+		return;
+	}
+	if (!isMoving) return;
+	moveTowardDestination();
 }
 
 void Alien::spawnAlien()
@@ -51,6 +81,10 @@ void Alien::spawnAlien()
 				(alienYPosition - destination.y)) <= MIN_DISTANCE);
 
 	setPosition(alienXPosition, alienYPosition);
+	//Scale initiale. L<alien est super petit.
+	setScale({ 0.f, 0.f });
+	isSpawning = true;
+	spawnTimer = ALIEN_SPAWN_SPEED;
 	activate();
 }
 
@@ -79,15 +113,10 @@ void Alien::moveTowardDestination()
 	float dy = destination.y - getPosition().y;
 	float dist = sqrt(dx * dx + dy * dy);
 
-	if (toward)
-	{
-		if (dist < DISTANCE_TOLERANCE)
-		{
+	if (toward && dist < DISTANCE_TOLERANCE)
 			return;
-		}
-	}
-	moveAngle = atan2f(dy, dx);
-	if (!toward) moveAngle += PI;
+
+	calculateMoveAngle();
 	setRotation(sf::radians(moveAngle));
 	move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
 }
@@ -121,3 +150,5 @@ void Alien::alienDead(const int deathScore)
 	playDeathSound();
 	displayAlienDeathScore(deathScore);
 }
+
+bool Alien::getIsSpawning() { return isSpawning; }

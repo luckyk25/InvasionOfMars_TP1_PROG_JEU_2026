@@ -40,7 +40,7 @@ const int BOOSTER = 0;
 const int BONUS_DURATION = 300;// 60 * 5 sec
 
 //Alien
-const int ALIEN_SPAWN_SPEED = 60;
+const float ALIEN_SPAWN_SPEED = 60.f;
 const int DEFAULT_ALIEN_COUNT = 160;
 const float ALIEN_MOVE_SPEED = 4.0f;
 const float DISTANCE_TOLERANCE = 15.0f;

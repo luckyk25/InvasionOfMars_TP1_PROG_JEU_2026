@@ -15,6 +15,8 @@ public:
 	void run();
 	void alienDead(const int deathScore);
 	void draw(RenderWindow& renderWindow);
+	bool getIsSpawning();
+	void calculateMoveAngle();
 private:
 
 	const Vector2i WORLD_SIZE;
@@ -26,8 +28,11 @@ private:
 
 	static Vector2f destination;
 	static bool toward;
-	int spawnTimer = 0;
 	float moveAngle = 0.0f;
+
+	float spawnTimer = 0.0f;
+	bool isSpawning = false;
+
 	bool isMoving = false;
 	Angle rotationAngle;
 

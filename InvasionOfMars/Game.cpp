@@ -306,7 +306,7 @@ void Game::checkBulletAlienCollision()
 	{
 		for(int j = 0; j < DEFAULT_ALIEN_COUNT; j++) 
 		{
-			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]))
+			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning())
 			{
 				bullets[i].deactivate();
 				alienDead(j);
@@ -317,7 +317,7 @@ void Game::checkBulletAlienCollision()
 	{
 		for (int j = 0; j < DEFAULT_ALIEN_COUNT; j++)
 		{
-			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]))
+			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning())
 			{
 				alienDead(j);
 			}
