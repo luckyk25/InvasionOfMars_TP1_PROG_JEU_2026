@@ -65,6 +65,7 @@ private:
 	void manageBonusSpawn(int j);
 
 	void ajustCrossingWorldLimits();
+	bool isAlienDead(int i, int j);
 	void checkBulletAlienCollision();
 	void checkPlayerAlienCollision();
 	void checkPlayerBonusCollision();

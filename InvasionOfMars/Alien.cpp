@@ -44,7 +44,7 @@ void Alien::update()
 		float progress = 1.f - (spawnTimer / ALIEN_SPAWN_SPEED);
 		setScale({ progress, progress });
 		calculateMoveAngle();
-		// J<ai utilisé gemini ai pour comprendre comment faire cette formule. 
+		// J'ai utilisé gemini ai pour mieux comprendre le principe. 
 		// le offset rend l'alien en petit peu tourné par rapport au "vrai" angle
 		// pour se rendre vers le joueur.
 		// quand le progress est a 0% il rajoute 360 degress.

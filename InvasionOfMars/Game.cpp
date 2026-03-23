@@ -122,10 +122,15 @@ void Game::getInputs()
 	if (gameOver) return;
 	if (Joystick::isConnected(0))
 	{
+		if (Joystick::isButtonPressed(0,1)) inputs.pause = true;
 		//le / 100 à la fin: on ramène le tout à une échelle de 0 à 1: plus simple
 		inputs.moveHorizontal = inputs.manageGamepadAxis(Joystick::getAxisPosition(0, Joystick::Axis::X));
 		inputs.moveVertical = inputs.manageGamepadAxis(Joystick::getAxisPosition(0, Joystick::Axis::Y));
+		//Pour ma menette c'est l'axe R. (le joystick droit). Pour xbox selon les corrigés, c'est U.
+		float axisU = Joystick::getAxisPosition(0, Joystick::Axis::Z);
+		inputs.rotation = inputs.convertJoystickAxis(axisU);
 		inputs.isGamepadActive = true;
+		inputs.fire = Joystick::isButtonPressed(0, 5);
 	}
 	else
 	{
@@ -208,16 +213,16 @@ void Game::checkPlayerBonusCollision()
 				{
 					case NUKE_NUMBER:
 						killAliensInRange();
-						bonuses[i][j].deactivate();
 						bonuses[i][j].playExplosionSound();
+						bonuses[i][j].deactivate();
 						break;
 					case BOOSTER:
 						boostOn = true;
 						boostTimer += BONUS_DURATION;
 						playerSpeedBoost = DEFAULT_SPEED_BOOST;
 						bonuses[i][j].playToggleSound();
-						player.switchYellow(true);
 						bonuses[i][j].deactivate();
+						player.switchYellow(true);
 						break;
 				}
 }
@@ -290,7 +295,6 @@ void Game::managePlayerRespawn()
 		playerRespawnTimer--;
 		if (playerRespawnTimer <= 0)
 		{
-			player.activate();
 			hordeSound->play();
 			playerInvincibleTimer = INVINCIBLE_TIMER;
 			playerInvincible = true;
@@ -300,13 +304,21 @@ void Game::managePlayerRespawn()
 	}
 }
 
+bool Game::isAlienDead(int i, int j) 
+{
+	if ((bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning()) || 
+		(blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning()))
+		return true;
+	return false;
+}
+
 void Game::checkBulletAlienCollision() 
 {
 	for(int i = 0; i < NBR_BULLETS; i++) 
 	{
 		for(int j = 0; j < DEFAULT_ALIEN_COUNT; j++) 
 		{
-			if(bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning())
+			if(isAlienDead(i, j))
 			{
 				bullets[i].deactivate();
 				alienDead(j);
@@ -317,7 +329,7 @@ void Game::checkBulletAlienCollision()
 	{
 		for (int j = 0; j < DEFAULT_ALIEN_COUNT; j++)
 		{
-			if (blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning())
+			if (isAlienDead(i, j))
 			{
 				alienDead(j);
 			}
@@ -360,7 +372,10 @@ void Game::manageBonusSpawn(int j)
 void Game::managePlayerMovment() 
 {
 	player.move(inputs.moveHorizontal * (PLAYER_SPEED + playerSpeedBoost), inputs.moveVertical * (PLAYER_SPEED + playerSpeedBoost));
-	player.setPlayerDirection(inputs.mousePosition);
+	if (inputs.isGamepadActive)
+		player.rotate(degrees({ inputs.rotation * ROTATION_SPEED}));
+	else
+		player.setPlayerDirection(inputs.mousePosition);
 	player.keepPlayerInBound();
 }
 
@@ -449,7 +464,8 @@ void Game::alienDead(int index)
 {
 	manageBonusSpawn(index);
 	hud.incrementScore();
-	aliens[index].alienDead(hud.getCurrentKillScore());
+	if(aliens[index].isActive())
+		aliens[index].alienDead(hud.getCurrentKillScore());
 
 }
 

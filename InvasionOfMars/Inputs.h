@@ -5,6 +5,7 @@
 struct Inputs
 {
 	const float DEAD_ZONE = 20.0f;
+	const float ROTATION_SPEED = 5.0f;
 
 	Inputs()
 	{
@@ -38,6 +39,12 @@ struct Inputs
 			moveVertical *= DIAGONAL_RATIO;
 			moveHorizontal *= DIAGONAL_RATIO;
 		}
+	}
+
+	float convertJoystickAxis(float axisValue)
+	{
+		if (abs(axisValue) <= DEAD_ZONE) { return 0.0f; }
+		return axisValue / 100.0f;
 	}
 
 	float moveVertical;

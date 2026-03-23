@@ -65,8 +65,11 @@ void Player::switchTransparence(const bool isTransparent)
 	J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
 	*/
 	Color color = this->getColor();
-	if (isTransparent)
+	if (isTransparent) 
+	{
 		color.a = 80;
+		this->activate();
+	}
 	else
 		color.a = 255;
 
