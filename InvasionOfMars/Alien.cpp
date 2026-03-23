@@ -29,6 +29,8 @@ void Alien::calculateMoveAngle()
 	float dx = destination.x - getPosition().x;
 	float dy = destination.y - getPosition().y;
 	moveAngle = atan2f(dy, dx);
+	// Permet de changer la direction de 180 degrées instantanement.
+	// toward s'applique a tout les aliens, car statique.
 	if (!toward) moveAngle += PI;
 }
 
@@ -66,9 +68,10 @@ void Alien::spawnAlien()
 {
 	float alienSizeX = getGlobalBounds().size.x;
 	float alienSizeY = getGlobalBounds().size.y;
+
+	//Essaye de spawner tant qu'il n'est pas à une distance tolérable. Par raport au joueur.
 	float alienXPosition;
 	float alienYPosition;
-
 	do
 	{
 		//https://www.geeksforgeeks.org/cpp/static_cast-in-cpp/
@@ -109,11 +112,12 @@ void Alien::draw(RenderWindow& renderWindow)
 
 void Alien::moveTowardDestination() 
 {
-	float dx = destination.x - getPosition().x;
-	float dy = destination.y - getPosition().y;
-	float dist = sqrt(dx * dx + dy * dy);
+	//Pythagore
+	float distanceX = destination.x - getPosition().x;
+	float distanceY = destination.y - getPosition().y;
+	float distance = sqrt(distanceX * distanceX + distanceY * distanceY);
 
-	if (toward && dist < DISTANCE_TOLERANCE)
+	if (toward && distance < DISTANCE_TOLERANCE)
 			return;
 
 	calculateMoveAngle();
@@ -121,21 +125,12 @@ void Alien::moveTowardDestination()
 	move(cos(moveAngle) * ALIEN_MOVE_SPEED, sin(moveAngle) * ALIEN_MOVE_SPEED);
 }
 
-void Alien::run() 
-{
-	isMoving = true;
-}
-
-void Alien::stop()
-{
-	isMoving = false;
-}
-
 void Alien::playDeathSound()
 {
 	alienDeathSound->play();
 }
 
+//Affiche le score obtenu pour le kill.
 void Alien::displayAlienDeathScore(const int score) 
 {
 	scoreTextTimer = DEFAULT_SCORE_DISPLAY_TIMER;

@@ -11,8 +11,6 @@ public:
 	static void setDestination(const Vector2f& destination);
 	static void changeDirection();
 	void spawnAlien();
-	void stop();
-	void run();
 	void alienDead(const int deathScore);
 	void draw(RenderWindow& renderWindow);
 	bool getIsSpawning();

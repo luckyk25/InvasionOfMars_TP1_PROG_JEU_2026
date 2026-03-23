@@ -117,12 +117,18 @@ void Game::getInputs()
 		{
 			if (keyPressed->scancode == Keyboard::Scan::P) inputs.pause = true;
 		}
+		if (const Event::JoystickButtonPressed* joystickButtonPressed = event->getIf<Event::JoystickButtonPressed>())
+		{
+			if (joystickButtonPressed->joystickId == 0)
+			{
+				if (joystickButtonPressed->button == 1) inputs.pause = true;
+			}
+		}
 	}
 
 	if (gameOver) return;
 	if (Joystick::isConnected(0))
 	{
-		if (Joystick::isButtonPressed(0,1)) inputs.pause = true;
 		//le / 100 à la fin: on ramène le tout à une échelle de 0 à 1: plus simple
 		inputs.moveHorizontal = inputs.manageGamepadAxis(Joystick::getAxisPosition(0, Joystick::Axis::X));
 		inputs.moveVertical = inputs.manageGamepadAxis(Joystick::getAxisPosition(0, Joystick::Axis::Y));
@@ -202,7 +208,7 @@ void Game::update()
 	ajustCrossingWorldLimits();
 }
 
-
+//La méthode vérifie si il y a une collision entre le joueur et un bonus.
 void Game::checkPlayerBonusCollision() 
 {
 	if (!player.isActive()) return;
