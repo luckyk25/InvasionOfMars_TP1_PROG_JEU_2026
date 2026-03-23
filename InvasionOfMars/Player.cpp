@@ -3,7 +3,6 @@
 #include <iostream>
 Player::Player()
 {
-
 }
 
 Player::~Player() 
@@ -24,6 +23,7 @@ void Player::init()
 
 void Player::setPlayerDirection(const Vector2f& direction)
 {
+	//Obtient la direction finale, trouve l'angle requis, tourne le joueur sélon l'angle par rapport à la direction.
 	this->direction = direction;
 	float moveAngle = atan2f((direction.y - getPosition().y), (direction.x - getPosition().x));
 	this->setRotation(radians(moveAngle));
@@ -31,11 +31,12 @@ void Player::setPlayerDirection(const Vector2f& direction)
 
 void Player::update() 
 {
-	std::cout << "x = " << this->getPosition().x << " y = " << this->getPosition().y;
 }
 
 void Player::keepPlayerInBound()
 {
+	//Empeche le jouer de quitter les limites du monde.
+	//les bounds sont predefinis en avance. Limite +/- la moitié de la taille de la texture.
 	if (getPosition().x < leftBound)
 		setPosition(leftBound, getPosition().y);
 	else if (getPosition().x > rightBound)
@@ -62,7 +63,7 @@ void Player::switchTransparence(const bool isTransparent)
 		sprite.setColor(sf::Color(255, 255, 255, 128));
 
 	j'ai utilisé l'IA pour le trouver plus rapidement.
-	J'ai compris que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
+	J'ai compris par essaye erruer que la couleur a(Alpha) definit la transparence. avec une valeur entre 0 et 255.
 	*/
 	Color color = this->getColor();
 	if (isTransparent) 
@@ -78,6 +79,8 @@ void Player::switchTransparence(const bool isTransparent)
 
 void Player::switchYellow(const bool isYellow) 
 {
+	//Change la couleur du joueur. Rend jaune si besoin.
+	// Si j'avais le temps j'aurais du utiliser un switch case avec 3 cas. Transparent, Doré, Normal.
 	if (isYellow)
 		// TODO si le temps mettre en const
 		this->setColor(sf::Color(255, 255, 0));

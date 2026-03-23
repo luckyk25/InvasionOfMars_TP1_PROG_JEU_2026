@@ -26,7 +26,7 @@ static const int NBR_BLASTS = 18;
 
 //Game
 const int PLAYER_RESPAWN_TIME = 120;
-const int INVINCIBLE_TIMER = 180;
+const int INVINCIBLE_TIMER = 180;// 60 * 3 sec.
 const int BONUS_SPAWN_RATE = 25;
 const int NBR_OF_BONUS = 6;
 const int NBR_BONUS_TYPE = 2;
@@ -40,7 +40,7 @@ const int BOOSTER = 0;
 const int BONUS_DURATION = 300;// 60 * 5 sec
 
 //Alien
-const float ALIEN_SPAWN_SPEED = 60.f;
+const float ALIEN_SPAWN_SPEED = 60.f; // 60 * 1 sec.
 const int DEFAULT_ALIEN_COUNT = 160;
 const float ALIEN_MOVE_SPEED = 4.0f;
 const float DISTANCE_TOLERANCE = 15.0f;
@@ -48,13 +48,14 @@ const float DISTANCE_TOLERANCE = 15.0f;
 //Math Helpers
 const float DIAGONAL_RATIO = 0.70710678f;
 const float PI = 3.14159265f;
-
+const float FULL_ROTATION = 360.f;
 //Hud
 const std::string PAUSE_TEXT = "Pause";
 const std::string GAME_OVER_TEXT = "Game Over";
 const int DEFAULT_SCORE_INCREMENT = 100;
 const int DEFAULT_LIVES_NUMBER = 5;
-const int DEFAULT_SCORE_DISPLAY_TIMER = 25;
+const int DEFAULT_SCORE_DISPLAY_TIMER = 25; // 60 * 0,411 sec.
 const int EXTRA_SCORE_INCREMENT_LIMIT = 500;
 const int EXTRA_SCORE_INCREMENT = 10;
 const int EXTRA_SCORE_TIMER = 60;
+const int SCORE_TO_GET_EXTRA_LIFE = 5000;

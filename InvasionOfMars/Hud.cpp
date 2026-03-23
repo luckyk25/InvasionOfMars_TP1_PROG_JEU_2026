@@ -16,7 +16,7 @@ Hud::~Hud()
 void Hud::hudInit()
 {
 	score = 0;
-
+	nbLifes = DEFAULT_LIVES_NUMBER;
 	scoreText = new Text(ContentPipeline::getInstance().getFont(), "Score: " + std::to_string(score), 30U);
 	scoreText->setFillColor(Color::White);
 	scoreText->setPosition({ 10.0f, 20.0f });
@@ -41,10 +41,9 @@ void Hud::hudInit()
 
 bool Hud::isPlayerDead() 
 {
+	//confirme si le joueur est mort.
 	if (nbLifes <= 0) 
-	{
 		return true;
-	}
 	else
 		return false;
 }
@@ -57,26 +56,37 @@ void Hud::setCurrentKillScore(int currentScore)
 void Hud::incrementScore() 
 {
 	int currentKillIncrement = DEFAULT_SCORE_INCREMENT;
+	//Le temps n'est pas encore écoulé.
 	if(scoreBonusTimer > 0)
 	{
+		//Incrementation avec bonus de 10.
 		currentKillIncrement = currentKillScore + EXTRA_SCORE_INCREMENT;
+		//Validation si la suite d'incrementation ne depasse pas la limite.
 		if (currentKillIncrement > EXTRA_SCORE_INCREMENT_LIMIT)
 			currentKillIncrement = EXTRA_SCORE_INCREMENT_LIMIT;
 	}
 	//permet de garder la valeur du kill actuel.
+	//Je suspecte qu'il y avait une manière plus optimale de le fair, mais cette façon semble marcher.
 	setCurrentKillScore(currentKillIncrement);
+
 	score += currentKillIncrement;
+	
+	//Le compteur de score pour obtenir le nombre de vies pour savoir si on peut rajouter une vie.
+	scoreToGetLife += currentKillIncrement;
 
+	if (scoreToGetLife >= SCORE_TO_GET_EXTRA_LIFE)
+	{
+		nbLifes++;
+		scoreToGetLife -= SCORE_TO_GET_EXTRA_LIFE;
+	}
 	scoreBonusTimer = EXTRA_SCORE_TIMER;
-
-
 	scoreText->setString("Score" + std::to_string(score));
 }
 
 void Hud::update() 
 {
-	scoreBonusTimer--;
-	
+	if(scoreBonusTimer > 0)
+		scoreBonusTimer--;
 	nbLivesText->setString("Vies: X" + std::to_string(nbLifes));
 }
 
@@ -87,6 +97,7 @@ void Hud::decreaseNumberOfLives()
 
 void Hud::displayPause(const bool isPause)
 {
+	//gestion de la pause.
 	if (isPause)
 		pauseState = true;
 	else
@@ -100,6 +111,7 @@ void Hud::draw(RenderWindow& renderWindow)
 	if(pauseState)
 		renderWindow.draw(*pauseText);
 	if (isPlayerDead())
+		//affiche la mort du joueur.
 		renderWindow.draw(*gameOverText);
 }
 

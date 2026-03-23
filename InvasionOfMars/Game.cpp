@@ -90,6 +90,7 @@ bool Game::init()
 
 bool Game::setRandomMusic() 
 {
+	// Permet d'obtenir une musique aléatoire de 0 à 2.
 	int randomNumber = (rand() % MUSIC_COUNT) + 0;
 	switch (randomNumber)
 	{
@@ -165,6 +166,7 @@ void Game::update()
 		if (--boostTimer <= 0) 
 		{
 			boostOn = false;
+			//remet le player speed boost a zéro.
 			playerSpeedBoost -= playerSpeedBoost;
 			player.switchYellow(false);
 		}
@@ -183,6 +185,7 @@ void Game::update()
 	for (int i = 0; i < NBR_BLASTS; i++)
 		blasts[i].fly();
 	
+	//Set une destination a tout les aliens à meme temps.
 	Alien::setDestination(player.getPosition());
 	
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
@@ -218,11 +221,14 @@ void Game::checkPlayerBonusCollision()
 				switch (i)
 				{
 					case NUKE_NUMBER:
+						//Tout les effets de NUKE
 						killAliensInRange();
 						bonuses[i][j].playExplosionSound();
 						bonuses[i][j].deactivate();
 						break;
 					case BOOSTER:
+						//Effets de booster. Si j'avais le temps il serait possible de mettre une grande partie
+						//dans les autres classes et éviter la répetition.
 						boostOn = true;
 						boostTimer += BONUS_DURATION;
 						playerSpeedBoost = DEFAULT_SPEED_BOOST;
@@ -312,6 +318,7 @@ void Game::managePlayerRespawn()
 
 bool Game::isAlienDead(int i, int j) 
 {
+	//Permet de valider si l'alien a été touché par un projectile BULLET ou BLAST. Ainsi confirme s'il a été tué.
 	if ((bullets[i].isActive() && aliens[j].isActive() && bullets[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning()) || 
 		(blasts[i].isActive() && aliens[j].isActive() && blasts[i].isCircleColliding(aliens[j]) && !aliens[j].getIsSpawning()))
 		return true;
@@ -347,7 +354,7 @@ void Game::manageBonusSpawn(int j)
 {
 	//Genere un nombre aléatoie de 0 a 24. Si le nombre est de 0. 
 	//La méthode spawn un booster. Si c'est 1 elle spawn un Nuke Number.
-	//Si un autre nombre. Rien spawn.
+	//Si un autre nombre. Rien spawn. Peut directement être inversé et modifié grâche au constantes.
 	//J provient d'une autre boucle pour le nombre d'alien.
 	int randomNumber = (rand() % BONUS_SPAWN_RATE) + 0;
 	switch (randomNumber)
@@ -377,17 +384,20 @@ void Game::manageBonusSpawn(int j)
 
 void Game::managePlayerMovment() 
 {
+	//Simple déplacement du joueur.
 	player.move(inputs.moveHorizontal * (PLAYER_SPEED + playerSpeedBoost), inputs.moveVertical * (PLAYER_SPEED + playerSpeedBoost));
+	
+	//Type de rotation change selon le type de contrôle utilisé par le joueur.
 	if (inputs.isGamepadActive)
 		player.rotate(degrees({ inputs.rotation * ROTATION_SPEED}));
 	else
 		player.setPlayerDirection(inputs.mousePosition);
+
 	player.keepPlayerInBound();
 }
 
 void Game::draw()
 {
-	//Toujours important d'effacer l'écran précédent
 	renderWindow.clear();
 	renderWindow.setView(mainView);
 	renderWindow.draw(*field);
@@ -402,6 +412,7 @@ void Game::draw()
 	for (int i = 0; i < NBR_BLASTS; i++)
 		blasts[i].draw(renderWindow);
 	
+	//Gère directement l'affichage de tout les bonus(tokens)
 	for (int i = 0; i < NBR_BONUS_TYPE; i++)
 		for (int j = 0; j < NBR_OF_BONUS; j++)
 			bonuses[i][j].draw(renderWindow);
@@ -418,6 +429,8 @@ bool Game::unload()
 	return true;
 }
 
+//Je n'ai pas utilisé dans le tp. J'ai gardé au cas ou pour ne pas briser le jeu.
+// Si jamais considerez qu'elle est effacée.
 void Game::calculateDeltaTime()
 {
 	deltaTime = clock.restart().asSeconds();
@@ -458,7 +471,7 @@ void Game::killAliensInRange()
 	for (int i = 0; i < DEFAULT_ALIEN_COUNT; i++)
 	{
 		sf::Vector2f position = aliens[i].getPosition();
-
+		//Valide si l'alien est dans le champ de vue.
 		if (position.x >= WORLD_LIMIT_MIN_X && position.y >= WORLD_LIMIT_MIN_Y && position.x <= WORLD_LIMIT_MAX_X && position.y <= WORLD_LIMIT_MAX_Y)
 		{
 			alienDead(i);
@@ -479,6 +492,7 @@ void Game::ajustCrossingWorldLimits()
 {
 	Vector2f playerPosition = player.getPosition();
 
+	//Bounds pour ne pas sortir du monde
 	if (playerPosition.x < WORLD_LIMIT_MIN_X) playerPosition.x = WORLD_LIMIT_MIN_X;
 	else if (playerPosition.x > WORLD_LIMIT_MAX_X) playerPosition.x = WORLD_LIMIT_MAX_X;
 

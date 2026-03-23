@@ -19,11 +19,13 @@ void Bullet::setBulletSound(const SoundBuffer& soundBuffer)
 
 void Bullet::fire(const GameObject& origin, const Vector2f& vectorialPush)
 {
+	//calcul mouvement du projectile.
 	setPosition(origin.getPosition());
 	bulletMove.x = BULLET_SPEED * cos(origin.getRotation().asRadians());
 	bulletMove.y = BULLET_SPEED * sin(origin.getRotation().asRadians());
 	bulletMove += vectorialPush;
 
+	//Optiomisation. Pour eviter que la bullet existe tout le temps.
 	lifeTime = MAX_LIFETIME;
 
 	bulletSound->play();
@@ -43,6 +45,7 @@ void Bullet::fly()
 
 void Bullet::setIsBlast(bool blast) 
 {
+	//permet de transformer en blast.
 	this->isBlast = blast;
 }
 

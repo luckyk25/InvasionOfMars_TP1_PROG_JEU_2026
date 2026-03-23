@@ -21,7 +21,7 @@ struct Inputs
 		//Peut-être pratique de sauvegarder le fait
 		//que le gamepad soit actif ou non (voir game.getInputs)
 		fire = false;
-		bool isGamepadActive = false;
+		isGamepadActive = false;
 		pause = false;
 	}	
 

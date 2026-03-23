@@ -23,8 +23,9 @@ private:
 	Text* pauseText = nullptr;
 	Text* gameOverText = nullptr;
 	
+	int scoreToGetLife = 0;
 	bool pauseState = false;
-	int nbLifes = DEFAULT_LIVES_NUMBER;
+	int nbLifes = 0;
 	int currentKillScore = 0;
 	float scoreBonusTimer = EXTRA_SCORE_TIMER;
 

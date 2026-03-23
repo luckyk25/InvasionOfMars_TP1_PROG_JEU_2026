@@ -42,7 +42,7 @@ void Alien::update()
 	if(isSpawning) 
 	{
 		spawnTimer --;
-		//Quand le timer est à 0. Le progress est a 100% (à 1). donc l'alein se rend à son scale de 1.
+		//Quand le timer est à 0. Le progress est a 100% (à 1). donc l'alein se rend à son scale à partir de 0.
 		float progress = 1.f - (spawnTimer / ALIEN_SPAWN_SPEED);
 		setScale({ progress, progress });
 		calculateMoveAngle();
@@ -50,7 +50,7 @@ void Alien::update()
 		// le offset rend l'alien en petit peu tourné par rapport au "vrai" angle
 		// pour se rendre vers le joueur.
 		// quand le progress est a 0% il rajoute 360 degress.
-		float rotationOffsetDegrees = (1.f - progress) * 360.f;
+		float rotationOffsetDegrees = (1.f - progress) * FULL_ROTATION;
 		setRotation(sf::degrees(sf::radians(moveAngle).asDegrees() + rotationOffsetDegrees));
 		//Après 1 seconde. Le scale est normal. l'alien n'est plus invincible.
 		if (spawnTimer <= 0)
@@ -69,7 +69,8 @@ void Alien::spawnAlien()
 	float alienSizeX = getGlobalBounds().size.x;
 	float alienSizeY = getGlobalBounds().size.y;
 
-	//Essaye de spawner tant qu'il n'est pas à une distance tolérable. Par raport au joueur.
+	//Essaye de spawner à l'endroit aléatoire dans le monde.
+	//tant qu'il n'est pas à une distance tolérable. Par raport au joueur.
 	float alienXPosition;
 	float alienYPosition;
 	do
