@@ -27,7 +27,7 @@ void Hud::hudInit()
 
 	pauseText = new Text(ContentPipeline::getInstance().getFont(), PAUSE_TEXT, 100u);
 	pauseText->setFillColor(Color::White);
-	//https://www.sfml-dev.org/documentation/2.3/classsf_1_1Rect.php
+	//https://learnsfml.com/basics/graphics/how-to-center-text/#example-code
 	// cette manière permet de mettre l'origine sur le vrai centre du texte.
 	pauseText->setOrigin(pauseText->getLocalBounds().getCenter());
 	pauseText->setPosition({ SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2});
